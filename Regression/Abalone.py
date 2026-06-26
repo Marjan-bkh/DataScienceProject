@@ -1,5 +1,5 @@
 import  pandas as pd
-df = pd.read_csv('abalone.data.csv')
+df = pd.read_csv('DataSets/abalone.data.csv')
 df.columns = [
     "Sex",
     "Length",
