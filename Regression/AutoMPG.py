@@ -1,12 +1,14 @@
-from statistics import LinearRegression
-
+import joblib
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
+import joblib
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
-from sklearn.metrics import mean_squared_error, mean_absolute_error
+from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
+from sklearn.linear_model import LinearRegression
+
 
 
 cols = ['mpg','cylinders','displacement','horsepower',
@@ -44,4 +46,13 @@ y_pred = model.predict(x_test_s)
 mse = mean_squared_error(y_test, y_pred)
 mae = mean_absolute_error(y_test, y_pred)
 rmse = np.sqrt(mean_squared_error(y_test, y_pred))
-print(f"MSE: {mse:.2f}, MAE: {mae:.2f}, RMSE: {rmse:.2f}")
+r2_score = r2_score(y_test, y_pred)
+#print(f"MSE: {mse:.2f}, MAE: {mae:.2f}, RMSE: {rmse:.2f}")
+print(f"R²  : {r2_score:.3f}")
+print(f"MSE : {mse:.3f}")
+print(f"RMSE: {rmse:.3f} mpg")
+print(f"MAE : {mae:.3f} mpg")
+
+joblib.dump(model,'mpg_model.pkl')
+joblib.dump(scaler,'scaler_model.pkl')
+print('Model saved!')
