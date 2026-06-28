@@ -54,5 +54,5 @@ print(f"RMSE: {rmse:.3f} mpg")
 print(f"MAE : {mae:.3f} mpg")
 
 joblib.dump(model,'mpg_model.pkl')
-joblib.dump(scaler,'scaler_model.pkl')
+joblib.dump(scaler,'mpg_scaler.pkl')
 print('Model saved!')
