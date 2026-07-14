@@ -33,6 +33,7 @@ df["month_cos"] = np.cos(2 * np.pi * df["month"] / 12)
 df = pd.get_dummies(df, columns=["cbwd"], prefix="wd")
 # print(df.columns)
 wind_cols = [c for c in df.columns if c.startswith("wd_")]
+# print(wind_cols)
 feature_cols = [
                    "DEWP", "TEMP", "PRES", "Iws", "Is", "Ir",
                    "hour_sin", "hour_cos", "month_sin", "month_cos",
@@ -70,7 +71,6 @@ for name, model in models.items():
     r2 = r2_score(y_test, y_pred)
 
     results[name] = {"RMSE": rmse, "MAE": mae, "R2": r2, "model": model, "y_pred": y_pred}
-
     print(f"\n--- {name} ---")
     print(f"RMSE: {rmse:.3f}")
     print(f"MAE:  {mae:.3f}")
@@ -80,9 +80,10 @@ comparison = pd.DataFrame({
     name: {"RMSE": res["RMSE"], "MAE": res["MAE"], "R2": res["R2"]}
     for name, res in results.items()
 }).T
-print(comparison)
+ # print(comparison)
 
 best_model_name = comparison["R2"].idxmax()
+# best_model_name = comparison.sort_values("R2",ascending= False).index[0]
 print(f"\nبهترین مدل بر اساس R2: {best_model_name}")
 
 best_pred = results[best_model_name]["y_pred"]
@@ -99,15 +100,15 @@ plt.tight_layout()
 # print("\nنمودار در prediction_vs_actual.png ذخیره شد.")
 plt.show()
 
-if "Random Forest" in results:
-    rf_model = results["Random Forest"]["model"]
-    importances = pd.Series(rf_model.feature_importances_, index=feature_cols)
-    importances = importances.sort_values(ascending=False)
-
-    plt.figure(figsize=(10, 6))
-    importances.plot(kind="bar")
-    plt.title("اهمیت فیچرها (Random Forest)")
-    plt.tight_layout()
-    plt.show()
-    # plt.savefig("feature_importance.png", dpi=120)
-    # print("نمودار اهمیت فیچرها در feature_importance.png ذخیره شد.")
+# if "Random Forest" in results:
+#     rf_model = results["Random Forest"]["model"]
+#     importances = pd.Series(rf_model.feature_importances_, index=feature_cols)
+#     importances = importances.sort_values(ascending=False)
+#
+#     plt.figure(figsize=(10, 6))
+#     importances.plot(kind="bar")
+#     plt.title("اهمیت فیچرها (Random Forest)")
+#     plt.tight_layout()
+#     plt.show()
+#     # plt.savefig("feature_importance.png", dpi=120)
+#     # print("نمودار اهمیت فیچرها در feature_importance.png ذخیره شد.")
