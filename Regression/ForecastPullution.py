@@ -98,17 +98,19 @@ plt.legend()
 plt.tight_layout()
 # plt.savefig("prediction_vs_actual.png", dpi=120)
 # print("\nنمودار در prediction_vs_actual.png ذخیره شد.")
-plt.show()
+#plt.show()
 
-# if "Random Forest" in results:
-#     rf_model = results["Random Forest"]["model"]
-#     importances = pd.Series(rf_model.feature_importances_, index=feature_cols)
-#     importances = importances.sort_values(ascending=False)
-#
-#     plt.figure(figsize=(10, 6))
-#     importances.plot(kind="bar")
-#     plt.title("اهمیت فیچرها (Random Forest)")
-#     plt.tight_layout()
-#     plt.show()
-#     # plt.savefig("feature_importance.png", dpi=120)
-#     # print("نمودار اهمیت فیچرها در feature_importance.png ذخیره شد.")
+if "Random Forest" in results:
+    rf_model = results["Random Forest"]["model"]
+    #print(rf_model)
+    importances = pd.Series(rf_model.feature_importances_, index=feature_cols)
+    importances = importances.sort_values(ascending=False)
+    # print(importances)
+
+    plt.figure(figsize=(10, 6))
+    importances.plot(kind="bar")
+    plt.title("اهمیت فیچرها (Random Forest)")
+    plt.tight_layout()
+    plt.show()
+    # plt.savefig("feature_importance.png", dpi=120)
+    # print("نمودار اهمیت فیچرها در feature_importance.png ذخیره شد.")
