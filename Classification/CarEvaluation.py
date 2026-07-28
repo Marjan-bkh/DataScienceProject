@@ -48,17 +48,103 @@ features = ['buying', 'maint', 'doors', 'persons', 'lug_boot', 'safety']
 # plt.tight_layout()
 # plt.show()
 
-from scipy.stats import chi2_contingency
+from sklearn.model_selection import train_test_split
+X = df.drop('class', axis=1)
+Y = df['class']
+X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size = 0.2, random_state = 0 , stratify=Y)
+# print(X_train.shape)
+# print(X_test.shape)
+# print(Y_train.value_counts(normalize=True) * 100)
+# print(Y_test.value_counts(normalize=True) * 100)
+from sklearn.preprocessing import OrdinalEncoder
 
-def cramers_v(x, y):
-    """محاسبه‌ی Cramér's V بین دو متغیر categorical"""
-    confusion_matrix = pd.crosstab(x, y)
-    chi2 = chi2_contingency(confusion_matrix)[0]
-    n = confusion_matrix.sum().sum()
-    r, k = confusion_matrix.shape
-    return np.sqrt(chi2 / (n * (min(r, k) - 1)))
+# ترتیب صحیح مقادیر رو برای هر ستون مشخص می‌کنیم (از کم‌ارزش به پرارزش)
+category_orders = [
+    ['low', 'med', 'high', 'vhigh'],      # buying
+    ['low', 'med', 'high', 'vhigh'],      # maint
+    ['2', '3', '4', '5more'],             # doors
+    ['2', '4', 'more'],                   # persons
+    ['small', 'med', 'big'],              # lug_boot
+    ['low', 'med', 'high']                # safety
+]
 
-print("همبستگی هر ویژگی با class (Cramér's V):\n")
-for col in features:
-    v = cramers_v(df[col], df['class'])
-    print(f"{col}: {v:.3f}")
+encoder = OrdinalEncoder(categories=category_orders)
+
+X_train_encoded = encoder.fit_transform(X_train)
+X_test_encoded = encoder.transform(X_test)
+# تبدیل به دیتافریم با اسم ستون‌های اصلی، برای خوانایی بهتر
+X_train_encoded = pd.DataFrame(X_train_encoded, columns=X_train.columns, index=X_train.index)
+X_test_encoded = pd.DataFrame(X_test_encoded, columns=X_test.columns, index=X_test.index)
+# print(X_train_encoded.head())
+
+from sklearn.linear_model import LogisticRegression
+from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier
+from sklearn.metrics import classification_report, accuracy_score, f1_score
+
+# # تعریف مدل‌ها در یک دیکشنری برای مدیریت ساده‌تر
+models = {
+    'Logistic Regression': LogisticRegression(max_iter=1000, random_state=42),
+    'Random Forest': RandomForestClassifier(random_state=42),
+    'Gradient Boosting': GradientBoostingClassifier(random_state=42)
+}
+#
+# results = {}
+#
+# for name, model in models.items():
+#     # آموزش مدل
+#     model.fit(X_train_encoded, Y_train)
+#
+#     # پیش‌بینی روی test
+#     Y_pred = model.predict(X_test_encoded)
+#
+#     # محاسبه‌ی معیارها
+#     acc = accuracy_score(Y_test, Y_pred)
+#     f1_macro = f1_score(Y_test, Y_pred, average='macro')
+#
+#     results[name] = {'accuracy': acc, 'f1_macro': f1_macro}
+#
+#     print(f"===== {name} =====")
+#     print(f"Accuracy: {acc:.4f}")
+#     print(f"F1-macro: {f1_macro:.4f}")
+#     print(classification_report(Y_test, Y_pred))
+#     print()
+
+from sklearn.model_selection import StratifiedKFold, cross_val_score
+#
+# # چون کلاس‌ها نامتوازنن، از StratifiedKFold استفاده می‌کنیم
+# # (دقیقاً مثل stratify=y در train_test_split، ولی برای Cross-Validation)
+# skf = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
+#
+# cv_results = {}
+#
+# for name, model in models.items():
+#     scores = cross_val_score(
+#         model,
+#         X_train_encoded,
+#         Y_train,
+#         cv=skf,
+#         scoring='f1_macro'
+#     )
+#     cv_results[name] = scores
+#     print(f"===== {name} =====")
+#     print(f"امتیاز هر Fold: {np.round(scores, 4)}")
+#     print(f"میانگین F1-macro: {scores.mean():.4f}")
+#     print(f"انحراف معیار: {scores.std():.4f}")
+#     print()
+
+import joblib
+
+# قدم ۱: آموزش نهایی روی کل train
+final_model = GradientBoostingClassifier(random_state=42)
+final_model.fit(X_train_encoded, Y_train)
+
+# قدم ۲: ارزیابی نهایی روی X_test دست‌نخورده
+y_test_pred = final_model.predict(X_test_encoded)
+print("===== ارزیابی نهایی روی Test Set =====")
+print(classification_report(Y_test, y_test_pred))
+
+# قدم ۳: ذخیره‌ی مدل و Encoder (هر دو لازمن برای استفاده‌ی بعدی!)
+joblib.dump(final_model, 'ModelsOutcome/car_evaluation_gb_model.pkl')
+joblib.dump(encoder, 'ModelsOutcome/car_evaluation_encoder.pkl')
+
+print("\n✅ مدل و Encoder با موفقیت ذخیره شدن.")
