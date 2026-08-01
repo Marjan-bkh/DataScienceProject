@@ -87,8 +87,8 @@ kmeans_final = KMeans(n_clusters=5, init='k-means++', n_init=10, random_state=42
 cluster_labels_kmeans = kmeans_final.fit_predict(X_scaled)
 
 # # اضافه کردن نتیجه به دیتافریم اصلی برای بررسی بعدی
-# df['KMeans_Cluster'] = cluster_labels_kmeans
-# # print(pd.Series(cluster_labels_kmeans).value_counts().sort_index())
+df['KMeans_Cluster'] = cluster_labels_kmeans
+# print(pd.Series(cluster_labels_kmeans).value_counts().sort_index())
 #
 # # --- کاهش بُعد با PCA برای مصورسازی ---
 # from sklearn.decomposition import PCA
@@ -124,26 +124,101 @@ from sklearn.cluster import AgglomerativeClustering
 # --- بخش ۱: رسم Dendrogram برای دیدن ساختار سلسله‌مراتبی ---
 linkage_matrix = linkage(X_scaled, method='ward')
 
-plt.figure(figsize=(14, 6))
-dendrogram(linkage_matrix, truncate_mode='lastp', p=30,
-           leaf_rotation=90, leaf_font_size=10)
-plt.title('Dendrogram (Hierarchical Clustering با روش Ward)')
-plt.xlabel('نمونه‌ها (یا خوشه‌های ادغام‌شده)')
-plt.ylabel('فاصله (Ward Distance)')
-plt.axhline(y=15, color='red', linestyle='--', label='برش پیشنهادی برای k=5')
-plt.legend()
-plt.tight_layout()
-plt.show()
+# plt.figure(figsize=(14, 6))
+# dendrogram(linkage_matrix, truncate_mode='lastp', p=30,
+#            leaf_rotation=90, leaf_font_size=10)
+# plt.title('Dendrogram (Hierarchical Clustering با روش Ward)')
+# plt.xlabel('نمونه‌ها (یا خوشه‌های ادغام‌شده)')
+# plt.ylabel('فاصله (Ward Distance)')
+# plt.axhline(y=15, color='red', linestyle='--', label='برش پیشنهادی برای k=5')
+# plt.legend()
+# plt.tight_layout()
+# plt.show()
 
 # --- بخش ۲: اجرای Agglomerative Clustering با k=5 (برای مقایسه با K-Means) ---
 hierarchical = AgglomerativeClustering(n_clusters=5, linkage='ward')
 cluster_labels_hier = hierarchical.fit_predict(X_scaled)
 
 df['Hierarchical_Cluster'] = cluster_labels_hier
-
-print("تعداد نمونه در هر خوشه (Hierarchical):")
-print(pd.Series(cluster_labels_hier).value_counts().sort_index())
-
+# print("تعداد نمونه در هر خوشه (Hierarchical):")
+# print(pd.Series(cluster_labels_hier).value_counts().sort_index())
 sil_hier = silhouette_score(X_scaled, cluster_labels_hier)
-print(f"\nSilhouette Score برای Hierarchical (k=5): {sil_hier:.4f}")
-print(f"Silhouette Score برای K-Means (k=5) بود: {silhouette_values[3]:.4f}")  # k=5 چهارمین عنصره چون از k=2 شروع کردیم
+# print(f"\nSilhouette Score برای Hierarchical (k=5): {sil_hier:.4f}")
+# print(f"Silhouette Score برای K-Means (k=5) بود: {silhouette_values[3]:.4f}")  # k=5 چهارمین عنصره چون از k=2 شروع کردیم
+
+from sklearn.mixture import GaussianMixture
+
+gmm = GaussianMixture(n_components=5, random_state=42, n_init=10)
+cluster_labels_gmm = gmm.fit_predict(X_scaled)
+
+df['GMM_Cluster'] = cluster_labels_gmm
+# print(pd.Series(cluster_labels_gmm).value_counts().sort_index())
+
+sil_gmm = silhouette_score(X_scaled, cluster_labels_gmm)
+# print(f"\nSilhouette Score برای GMM (k=5): {sil_gmm:.4f}")
+# print(f"\n--- خلاصه‌ی مقایسه‌ی هر ۳ الگوریتم ---")
+# print(f"K-Means:      {silhouette_values[3]:.4f}")
+# print(f"Hierarchical: {sil_hier:.4f}")
+# print(f"GMM:          {sil_gmm:.4f}")
+
+from sklearn.metrics import adjusted_rand_score, normalized_mutual_info_score, confusion_matrix
+import numpy as np
+
+y_true = df['Class'].values
+
+results = {}
+for name, labels in [('K-Means', cluster_labels_kmeans),
+                      ('Hierarchical', cluster_labels_hier),
+                      ('GMM', cluster_labels_gmm)]:
+    ari = adjusted_rand_score(y_true, labels)
+    nmi = normalized_mutual_info_score(y_true, labels)
+    results[name] = {'ARI': ari, 'NMI': nmi}
+    print(f"{name}:")
+    print(f"  ARI (Adjusted Rand Index): {ari:.4f}")
+    print(f"  NMI (Normalized Mutual Information): {nmi:.4f}\n")
+
+# # جدول تطبیق خوشه‌ها با Class واقعی - برای بهترین الگوریتم
+# best_algo = max(results, key=lambda x: results[x]['ARI'])
+# print(f"بهترین الگوریتم بر اساس ARI: {best_algo}")
+#
+# label_map = {'K-Means': cluster_labels_kmeans,
+#              'Hierarchical': cluster_labels_hier,
+#              'GMM': cluster_labels_gmm}
+#
+# crosstab = pd.crosstab(df['Class'], label_map[best_algo],
+#                         rownames=['Class واقعی'], colnames=['خوشه‌ی پیش‌بینی‌شده'])
+# print(f"\nجدول تطبیق (Class واقعی در مقابل خوشه‌های {best_algo}):")
+# print(crosstab)
+
+# # میانگین هر فیچر به تفکیک خوشه‌ی GMM
+# cluster_profile = df.groupby('GMM_Cluster')[features].mean()
+# cluster_profile['تعداد نمونه'] = df.groupby('GMM_Cluster').size()
+
+# print("پروفایل هر خوشه (میانگین فیچرها):")
+# print(cluster_profile.round(3))
+#
+# # نمودار Heatmap برای دیدن بصری تفاوت خوشه‌ها
+# plt.figure(figsize=(10, 6))
+# sns.heatmap(cluster_profile[features], annot=True, cmap='YlOrRd', fmt='.2f',
+#             cbar_kws={'label': 'مقدار میانگین (Scale نشده)'})
+# plt.title('پروفایل خوشه‌های GMM بر اساس میانگین فیچرها')
+# plt.xlabel('فیچر')
+# plt.ylabel('خوشه')
+# plt.tight_layout()
+# plt.show()
+
+import joblib
+
+joblib.dump(gmm, 'ModelsOutcome/students_knowledge_gmm_final_model.pkl')
+joblib.dump(scaler, 'ModelsOutcome/students_knowledge_scaler.pkl')
+
+print("مدل و Scaler با موفقیت ذخیره شدن.")
+# # تست سریع: بارگذاری دوباره و بررسی این‌که درست کار می‌کنه
+# loaded_gmm = joblib.load('ModelsOutcome/students_knowledge_gmm_final_model.pkl')
+# loaded_scaler = joblib.load('ModelsOutcome/students_knowledge_scaler.pkl')
+#
+# # مثال: پیش‌بینی خوشه برای یه دانشجوی فرضی جدید
+# sample_student = pd.DataFrame({'V1':[0.3], 'V2':[0.4], 'V3':[0.5], 'V4':[0.7], 'V5':[0.6]})
+# sample_scaled = loaded_scaler.transform(sample_student)
+# predicted_cluster = loaded_gmm.predict(sample_scaled)
+# print(f"\nخوشه‌ی پیش‌بینی‌شده برای دانشجوی نمونه: {predicted_cluster[0]}")
