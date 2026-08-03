@@ -127,4 +127,4 @@ print("فیچرهای مورد نیاز مدل:", list(X_train.columns))
 
 loaded_model = joblib.load('ModelsOutcome/glass_type_rf_model.pkl')
 test_pred = loaded_model.predict(X_test)
-print("\nAccuracy مدل بارگذاری‌شده روی X_test:", accuracy_score(y_test, test_pred))
+print(accuracy_score(y_test, test_pred))
