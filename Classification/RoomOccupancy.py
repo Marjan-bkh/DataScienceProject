@@ -96,15 +96,25 @@ best_model = models['Logistic Regression']
 
 y_pred_test2 = best_model.predict(X_test2)
 
-print(f"Accuracy:  {accuracy_score(y_test2, y_pred_test2):.4f}")
-print(f"Precision: {precision_score(y_test2, y_pred_test2):.4f}")
-print(f"Recall:    {recall_score(y_test2, y_pred_test2):.4f}")
-print(f"F1:        {f1_score(y_test2, y_pred_test2):.4f}")
+# print(f"Accuracy:  {accuracy_score(y_test2, y_pred_test2):.4f}")
+# print(f"Precision: {precision_score(y_test2, y_pred_test2):.4f}")
+# print(f"Recall:    {recall_score(y_test2, y_pred_test2):.4f}")
+# print(f"F1:        {f1_score(y_test2, y_pred_test2):.4f}")
+#
+# cm2 = confusion_matrix(y_test2, y_pred_test2)
+# print(cm2)
+#
+# disp2 = ConfusionMatrixDisplay(confusion_matrix=cm2, display_labels=['Empty (0)', 'Occupied (1)'])
+# disp2.plot(cmap='Greens')
+# plt.title('Confusion Matrix - Logistic Regression on Test2 (Final)')
+# plt.show()
 
-cm2 = confusion_matrix(y_test2, y_pred_test2)
-print(cm2)
+import joblib
 
-disp2 = ConfusionMatrixDisplay(confusion_matrix=cm2, display_labels=['Empty (0)', 'Occupied (1)'])
-disp2.plot(cmap='Greens')
-plt.title('Confusion Matrix - Logistic Regression on Test2 (Final)')
-plt.show()
+joblib.dump(best_model, 'ModelsOutcome/room_occupancy_logreg_model.pkl')
+joblib.dump(feature_cols, 'ModelsOutcome/room_occupancy_feature_columns.pkl')
+print("مدل و اسم فیچرها ذخیره شدن.")
+# print(feature_cols)
+
+loaded_model = joblib.load('ModelsOutcome/room_occupancy_logreg_model.pkl')
+loaded_features = joblib.load('ModelsOutcome/room_occupancy_feature_columns.pkl')
