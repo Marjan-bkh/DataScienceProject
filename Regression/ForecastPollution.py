@@ -71,31 +71,31 @@ for name, model in models.items():
     r2 = r2_score(y_test, y_pred)
 
     results[name] = {"RMSE": rmse, "MAE": mae, "R2": r2, "model": model, "y_pred": y_pred}
-    print(f"\n--- {name} ---")
-    print(f"RMSE: {rmse:.3f}")
-    print(f"MAE:  {mae:.3f}")
-    print(f"R2:   {r2:.3f}")
+    # print(f"\n--- {name} ---")
+    # print(f"RMSE: {rmse:.3f}")
+    # print(f"MAE:  {mae:.3f}")
+    # print(f"R2:   {r2:.3f}")
 
 comparison = pd.DataFrame({
     name: {"RMSE": res["RMSE"], "MAE": res["MAE"], "R2": res["R2"]}
     for name, res in results.items()
 }).T
- # print(comparison)
+print(comparison)
 
 best_model_name = comparison["R2"].idxmax()
 # best_model_name = comparison.sort_values("R2",ascending= False).index[0]
-print(f"\nبهترین مدل بر اساس R2: {best_model_name}")
+# print(f"\nبهترین مدل بر اساس R2: {best_model_name}")
 
 best_pred = results[best_model_name]["y_pred"]
 
-plt.figure(figsize=(12, 5))
-plt.plot(y_test.values[:500], label="واقعی", linewidth=1)
-plt.plot(best_pred[:500], label="پیش‌بینی", linewidth=1, alpha=0.7)
-plt.title(f"مقایسه مقادیر واقعی و پیش‌بینی‌شده ({best_model_name}) - ۵۰۰ نمونه اول تست")
-plt.xlabel("نمونه")
-plt.ylabel("PM2.5")
-plt.legend()
-plt.tight_layout()
+# plt.figure(figsize=(12, 5))
+# plt.plot(y_test.values[:500], label="واقعی", linewidth=1)
+# plt.plot(best_pred[:500], label="پیش‌بینی", linewidth=1, alpha=0.7)
+# plt.title(f"مقایسه مقادیر واقعی و پیش‌بینی‌شده ({best_model_name}) - ۵۰۰ نمونه اول تست")
+# plt.xlabel("نمونه")
+# plt.ylabel("PM2.5")
+# plt.legend()
+# plt.tight_layout()
 # plt.savefig("prediction_vs_actual.png", dpi=120)
 # print("\nنمودار در prediction_vs_actual.png ذخیره شد.")
 #plt.show()
@@ -107,10 +107,17 @@ if "Random Forest" in results:
     importances = importances.sort_values(ascending=False)
     # print(importances)
 
-    plt.figure(figsize=(10, 6))
-    importances.plot(kind="bar")
-    plt.title("اهمیت فیچرها (Random Forest)")
-    plt.tight_layout()
-    plt.show()
-    # plt.savefig("feature_importance.png", dpi=120)
-    # print("نمودار اهمیت فیچرها در feature_importance.png ذخیره شد.")
+    # plt.figure(figsize=(10, 6))
+    # importances.plot(kind="bar")
+    # plt.title("اهمیت فیچرها (Random Forest)")
+    # plt.tight_layout()
+    # plt.show()
+
+
+best_model = results[best_model_name]["model"]
+
+import joblib
+joblib.dump(list(X_train.columns), 'ModelsOutcome/forecast_pollution_features.pkl')
+joblib.dump(best_model, 'ModelsOutcome/forecast_pollution_model.pkl')
+joblib.dump(scaler, 'ModelsOutcome/forecast_pollution_scaler.pkl')
+print('Model saved!')

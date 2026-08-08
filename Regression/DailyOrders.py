@@ -89,7 +89,7 @@ for name, model in models.items():
     print(f"{name}: میانگین R²={scores.mean():.3f}, انحراف معیار={scores.std():.3f}")
 
 
-# بهترین مدل رو بر اساس cross validation انتخاب کن
+
 best_name = None
 best_score = -999
 
@@ -101,14 +101,12 @@ for name, model in models.items():
 best_model = models[best_name]
 best_model.fit(x_scaled, y)
 
-print(f"\nبهترین مدل: {best_name}")
+# print(best_model,best_score)
 
-
-
-# ذخیره مدل و scaler
-# joblib.dump(best_model, 'best_model.pkl')
-# joblib.dump(scaler, 'scaler.pkl')
-# print("مدل ذخیره شد.")
-
+import joblib
+joblib.dump(list(x.columns), 'ModelsOutcome/daily_orders_features.pkl')
+joblib.dump(best_model, 'ModelsOutcome/daily_orders_model.pkl')
+joblib.dump(scaler, 'ModelsOutcome/daily_orders_scaler.pkl')
+print('Model saved!')
 
 

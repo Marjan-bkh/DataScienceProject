@@ -5,7 +5,7 @@ import seaborn as sns
 
 df= pd.read_excel('DataSets/Concrete_Data.xls')
 
-# نام ستون‌ها رو ساده می‌کنیم چون اسم‌های اصلی طولانی و شلوغن
+
 df.columns = ['cement', 'slag', 'flyash', 'water',
               'superplasticizer', 'coarse_agg', 'fine_agg',
               'age', 'strength']
@@ -75,8 +75,8 @@ def add_features(X):
 X_train_fe = add_features(X_train)
 X_test_fe = add_features(X_test)
 
-print(X_train_fe.columns.tolist())
-print(X_train_fe.head())
+# print(X_train_fe.columns.tolist())
+# print(X_train_fe.head())
 
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
@@ -114,8 +114,6 @@ r2_gb = r2_score(Y_test, Y_pred_gb)
 print(f'Gradient Boosting -> RMSE: {rmse_gb:.3f}, MAE: {mae_gb:.3f}, R2: {r2_gb:.3f}')
 
 from sklearn.model_selection import cross_val_score,KFold
-# چون Feature Engineering ما فقط row-wise هست (نه آماری)، می‌تونیم راحت
-# روی کل X (بعد از اعمال add_features) از CV استفاده کنیم
 X_all_fe =add_features(X)
 kf= KFold(n_splits=5, shuffle=True, random_state=42)
 models = {
@@ -128,7 +126,6 @@ for name, model in models.items():
     print(f'{name}: R2 mean={scores.mean():.3f}, std={scores.std():.3f}')
     print(f'   individual folds: {np.round(scores, 3)}')
 
-# Feature Importance از Gradient Boosting (بهترین مدل ما)
 importance_gb= pd.Series(gb.feature_importances_,index=X_train_fe.columns)
 importance_gb= importance_gb.sort_values(ascending=False)
 print(importance_gb)
@@ -143,7 +140,7 @@ plt.tight_layout()
 # plt.show()
 import joblib
 
-# نسخه نهایی فیچرها - حذف فیچرهای کم‌اهمیت و redundant
+
 def add_features_final(X):
     X = X.copy()
     X['water_cement_ratio'] = X['water'] / X['cement']
@@ -155,16 +152,15 @@ def add_features_final(X):
 
 X_final = add_features_final(X)
 
-# مدل نهایی روی کل داده (train + test) train می‌شه چون آماده‌ی استفاده واقعیه
 final_model = GradientBoostingRegressor(n_estimators=200, learning_rate=0.1,
                                           max_depth=3, random_state=42)
 final_model.fit(X_final, Y)
-#
-# # ذخیره مدل برای استفاده بعدی
-# joblib.dump(final_model, 'concrete_strength_model.pkl')
-# print('مدل ذخیره شد.')
 
-# # تست یک پیش‌بینی نمونه
+# joblib.dump(list(X_final.columns), 'ModelsOutcome/concrete_strength_features.pkl')
+# joblib.dump(final_model, 'ModelsOutcome/concrete_strength_model.pkl')
+# print('model saved')
+
+
 # sample = X_final.iloc[[0]]
 # pred = final_model.predict(sample)
-# print(f'پیش‌بینی نمونه: {pred[0]:.2f} MPa | مقدار واقعی: {Y.iloc[0]:.2f} MPa')
+# print(f' {pred[0]:.2f} MPa |  {Y.iloc[0]:.2f} MPa')

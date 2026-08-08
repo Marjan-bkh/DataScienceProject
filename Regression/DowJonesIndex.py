@@ -149,7 +149,7 @@ y_pred_final = final_model.predict(X_test_v2)
 r2_final = r2_score(y_test, y_pred_final)
 mae_final = mean_absolute_error(y_test, y_pred_final)
 rmse_final = mean_squared_error(y_test, y_pred_final) ** 0.5
-# print(f"R2: {r2_final:.4f}")
+print(f"R2: {r2_final:.4f}")
 # print(f"MAE: {mae_final:.4f}")
 # print(f"RMSE: {rmse_final:.4f}")
 
@@ -165,9 +165,9 @@ rmse_final = mean_squared_error(y_test, y_pred_final) ** 0.5
 # plt.tight_layout()
 # plt.show()
 
-import joblib
-
-joblib.dump(final_model, 'ModelsOutcome/dow_jones_rf_model.pkl')
-joblib.dump(list(X_train_v2.columns), 'ModelsOutcome/dow_jones_feature_columns.pkl')
-joblib.dump(scaler_v2, 'ModelsOutcome/dow_jones_scaler.pkl')
-print('model saved')
+# import joblib
+#
+# joblib.dump(final_model, 'ModelsOutcome/dow_jones_rf_model.pkl')
+# joblib.dump(list(X_train_v2.columns), 'ModelsOutcome/dow_jones_feature_columns.pkl')
+# joblib.dump(scaler_v2, 'ModelsOutcome/dow_jones_scaler.pkl')
+# print('model saved')

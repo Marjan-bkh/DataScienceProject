@@ -33,13 +33,23 @@ mse = mean_squared_error(y_test, y_pred)
 mae = mean_absolute_error(y_test, y_pred)
 rmse = np.sqrt(mean_squared_error(y_test, y_pred))
 print(f"MSE: {mse:.2f}, MAE: {mae:.2f}, RMSE: {rmse:.2f}")
+from sklearn.metrics import r2_score
+r2 = r2_score(y_test, y_pred)
+print(f"R²: {r2:.4f}")
 
-import matplotlib.pyplot as plt
-plt.scatter(y_test, y_pred , alpha = 0.3)
-plt.xlabel("Actual Values") #Actual Rings
-plt.ylabel("Predicted Values") #Predicted Rings
-plt.title("Actual vs Predicted Values")
-plt.show()
+# import matplotlib.pyplot as plt
+# plt.scatter(y_test, y_pred , alpha = 0.3)
+# plt.xlabel("Actual Values") #Actual Rings
+# plt.ylabel("Predicted Values") #Predicted Rings
+# plt.title("Actual vs Predicted Values")
+# plt.show()
+
+import joblib
+
+joblib.dump(regressor, 'ModelsOutcome/abalone_model.pkl')
+joblib.dump(list(X_train.columns), 'ModelsOutcome/abalone_feature_columns.pkl')
+print('model saved')
+
 
 
 

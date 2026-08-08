@@ -4,35 +4,21 @@ import joblib
 
 from sklearn.ensemble import RandomForestRegressor
 
-# ==========================================================================
-# این نسخه فقط شامل مراحل ضروری برای ساخت و ذخیره‌ی مدل نهاییه.
-# مراحل اکتشافی (EDA، نمودارها، مقایسه مدل‌ها، CV، day.csv و ...) که قبلاً
-# انجام‌شون دادیم و به یک نتیجه رسیدیم (Random Forest روی hour.csv)،
-# پایین همین فایل به‌صورت کامنت نگه داشته شدن تا اگه لازم شد دوباره
-# قابل اجرا باشن، ولی برای اجرای روتین "train و ذخیره مدل" لازم نیستن.
-# ==========================================================================
-
 df_hour = pd.read_csv('DataSets/BikeRent_hour.csv')
 
-# --------------------------------------------------------------------
-# پاکسازی: حذف ۲۲ رکورد خراب hum=0 (خرابی سنسور در 2011-03-10)
-# --------------------------------------------------------------------
 df_hour_clean = df_hour[df_hour['hum'] != 0].copy()
 print(f"تعداد رکوردها قبل از حذف: {len(df_hour)}")
 print(f"تعداد رکوردها بعد از حذف: {len(df_hour_clean)}")
 
 
-# --------------------------------------------------------------------
-# Feature Engineering (همون تابعی که قبلاً ساختیم)
-# --------------------------------------------------------------------
 def engineer_features(df, is_hourly=True):
     df = df.copy()
 
-    # حذف ستون‌های بی‌فایده یا خطرناک (نشتی داده)
+
     cols_to_drop = ['instant', 'dteday', 'casual', 'registered', 'temp']
     df = df.drop(columns=[c for c in cols_to_drop if c in df.columns])
 
-    # Cyclical encoding برای mnth (دوره=12) و weekday (دوره=7)
+
     df['mnth_sin'] = np.sin(2 * np.pi * df['mnth'] / 12)
     df['mnth_cos'] = np.cos(2 * np.pi * df['mnth'] / 12)
     df['weekday_sin'] = np.sin(2 * np.pi * df['weekday'] / 7)
@@ -45,8 +31,7 @@ def engineer_features(df, is_hourly=True):
         df['hr_cos'] = np.cos(2 * np.pi * df['hr'] / 24)
         df = df.drop(columns=['hr'])
 
-    # مشخص کردن دستی همه‌ی سطوح ممکن، تا Train/Test/داده جدید همیشه
-    # ستون‌های dummy یکسانی بسازن (حل مشکل ValueError قبلی)
+
     df['season'] = pd.Categorical(df['season'], categories=[1, 2, 3, 4])
     df['weathersit'] = pd.Categorical(df['weathersit'], categories=[1, 2, 3, 4])
 
@@ -64,18 +49,12 @@ y_full_hour = df_hour_fe['cnt']
 print(f"تعداد فیچرها: {X_full_hour.shape[1]}")
 print(f"ستون‌های مدل: {list(X_full_hour.columns)}")
 
-# --------------------------------------------------------------------
-# Train نهایی روی کل داده (چون قبلاً با Train/Test و CV ارزیابی‌اش
-# کردیم و از عملکردش مطمئن شدیم؛ الان از تمام داده برای دقت بیشتر
-# استفاده می‌کنیم)
-# --------------------------------------------------------------------
+
 final_model = RandomForestRegressor(n_estimators=100, random_state=42, n_jobs=-1)
 final_model.fit(X_full_hour, y_full_hour)
 
-# --------------------------------------------------------------------
-# ذخیره مدل + متادیتای لازم (تا در GUI بدونیم دقیقاً چه فیچرهایی و
-# به چه ترتیبی باید به مدل بدیم)
-# --------------------------------------------------------------------
+
+
 model_package = {
     'model': final_model,
     'feature_names': list(X_full_hour.columns),
@@ -93,13 +72,6 @@ prediction = final_model.predict(sample)
 print(f"پیش‌بینی برای نمونه اول: {prediction[0]:.1f}  |  مقدار واقعی: {y_full_hour.iloc[0]}")
 
 
-# ==========================================================================
-#                     مراحل اکتشافی/تحلیلی قبلی (آرشیو)
-#   این بخش‌ها برای رسیدن به نتیجه‌ی بالا لازم بودن ولی برای اجرای
-#   روتین train+save ضروری نیستن. اگه خواستی EDA/CV/مقایسه مدل‌ها رو
-#   دوباره ببینی، کامنت‌شون رو بردار.
-# ==========================================================================
-
 # --- EDA (نمودارها، describe، heatmap و ...) ---
 # import matplotlib.pyplot as plt
 # import seaborn as sns
@@ -111,7 +83,7 @@ print(f"پیش‌بینی برای نمونه اول: {prediction[0]:.1f}  |  م
 # from sklearn.linear_model import LinearRegression
 # from sklearn.ensemble import GradientBoostingRegressor
 # from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
-# ... (کد split + evaluate_model که قبلاً نوشتیم)
+
 
 # --- day.csv ---
 # نتیجه‌گیری قبلی: day.csv فقط 731 رکورد داره و با TimeSeriesSplit
