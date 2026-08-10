@@ -86,13 +86,23 @@ models = {
 # results_df = pd.DataFrame(results)
 # print(results_df.to_string())
 
-import joblib
+
+
+# medians = X_train.median()
+# print(medians.to_dict())
+
+# import joblib
 
 final_model = GradientBoostingRegressor(random_state=42)
 final_model.fit(X_train, y_train)
+from sklearn.metrics import r2_score
+y_pred_final = final_model.predict(X_test)
+r2 = r2_score(y_test, y_pred_final)
+print(f"R²: {r2:.4f}")
 
-joblib.dump(final_model, 'ModelsOutcome/online_news_popularity_gb_regressor.pkl')
-
-joblib.dump(list(X_train.columns), 'ModelsOutcome/online_news_popularity_reg_feature_columns.pkl')
-
-print("model saved")
+#
+# joblib.dump(final_model, 'ModelsOutcome/online_news_popularity_gb_regressor.pkl')
+#
+# joblib.dump(list(X_train.columns), 'ModelsOutcome/online_news_popularity_reg_feature_columns.pkl')
+#
+# print("model saved")

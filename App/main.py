@@ -7,6 +7,13 @@ from prediction_pages.concrete import PredictionPageConcrete
 from prediction_pages.forecast_pollution import PredictionPageForecastPollution
 from prediction_pages.daily_orders import PredictionPageDailyOrders
 from prediction_pages.dow_jones import PredictionPageDowJones
+from prediction_pages.abalone import PredictionPageAbalone
+from prediction_pages.real_estate import PredictionPageRealEstate
+from prediction_pages.online_news import PredictionPageOnlineNews
+from prediction_pages.banknote import PredictionPageBanknote
+from prediction_pages.blood_transfusion import PredictionPageBloodTransfusion
+from prediction_pages.car_evaluation import PredictionPageCarEvaluation
+from prediction_pages.bankruptcy import PredictionPageQualitativeBankruptcy
 
 
 class App(tk.Tk):
@@ -38,6 +45,15 @@ class App(tk.Tk):
         self.frames["prediction_forecast_pollution"] = PredictionPageForecastPollution(container, self)
         self.frames["prediction_daily_orders"] = PredictionPageDailyOrders(container, self)
         self.frames["prediction_dow_jones"] = PredictionPageDowJones(container, self)
+        self.frames["prediction_abalone"] = PredictionPageAbalone(container, self)
+        self.frames["prediction_real_estate"] = PredictionPageRealEstate(container, self)
+        self.frames["prediction_online_news"] = PredictionPageOnlineNews(container, self)
+        self.frames["prediction_banknote"] = PredictionPageBanknote(container, self)
+        self.frames["prediction_blood_transfusion"] = PredictionPageBloodTransfusion(container, self)
+        self.frames["prediction_car_evaluation"] = PredictionPageCarEvaluation(container, self)
+        self.frames["prediction_qualitative_bankruptcy"] = PredictionPageQualitativeBankruptcy(container, self)
+
+
 
 
         for frame in self.frames.values():

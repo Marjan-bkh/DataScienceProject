@@ -20,7 +20,19 @@ class CategoryPage(tk.Frame):
         for widget in self.list_frame.winfo_children():
             widget.destroy()
 
-        if category == "regression":
+        if category == "classification":
+            tk.Button(self.list_frame, text="Banknote Authentication", width=30,
+                          command=lambda: self.controller.show_frame("prediction_banknote")).pack(pady=5)
+            tk.Button(self.list_frame, text="Blood Transfusion", width=30,
+                      command=lambda: self.controller.show_frame("prediction_blood_transfusion")).pack(pady=5)
+            tk.Button(self.list_frame, text="Car Evaluation", width=30,
+                      command=lambda: self.controller.show_frame("prediction_car_evaluation")).pack(pady=5)
+            tk.Button(self.list_frame, text="Qualitative Bankruptcy", width=30,
+                      command=lambda: self.controller.show_frame("prediction_qualitative_bankruptcy")).pack(pady=5)
+
+
+
+        elif category == "regression":
             tk.Button(self.list_frame, text="Bike Rental Demand", width=30,
                       command=lambda: self.controller.show_frame("prediction", dataset="bike_rental")).pack(pady=5)
             tk.Button(self.list_frame, text="Auto MPG", width=30,
@@ -33,5 +45,11 @@ class CategoryPage(tk.Frame):
                       command=lambda: self.controller.show_frame("prediction_daily_orders")).pack(pady=5)
             tk.Button(self.list_frame, text="Dow Jones Index", width=30,
                       command=lambda: self.controller.show_frame("prediction_dow_jones")).pack(pady=5)
+            tk.Button(self.list_frame, text="Abalone Age", width=30,
+                      command=lambda: self.controller.show_frame("prediction_abalone")).pack(pady=5)
+            tk.Button(self.list_frame, text="Real Estate Valuation", width=30,
+                      command=lambda: self.controller.show_frame("prediction_real_estate")).pack(pady=5)
+            tk.Button(self.list_frame, text="Online News Popularity", width=30,
+                      command=lambda: self.controller.show_frame("prediction_online_news")).pack(pady=5)
         else:
             tk.Label(self.list_frame, text="No datasets added yet.").pack()

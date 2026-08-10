@@ -8,7 +8,7 @@ df = pd.read_csv('Datasets/data_banknote_authentication.txt', header=None, names
 # print(df.head())
 # print(df['class'].value_counts())
 # print(df['class'].value_counts(normalize=True))
-# print(df.describe())
+print(df.describe())
 # print(df.isnull().sum())
 
 import matplotlib.pyplot as plt
@@ -106,13 +106,13 @@ y_pred_final = final_model.predict(X_test_scaled)
 # from sklearn.metrics import confusion_matrix, classification_report
 # print(confusion_matrix(y_test, y_pred_final))
 # print(classification_report(y_test, y_pred_final))
-
-import joblib
-
-joblib.dump(final_model, 'ModelsOutcome/banknote_svm_model.pkl')
-joblib.dump(scaler, 'ModelsOutcome/banknote_scaler.pkl')
-joblib.dump(list(X_train.columns), 'ModelsOutcome/banknote_feature_columns.pkl')
-
-print("model saved")
-
+#
+# import joblib
+#
+# joblib.dump(final_model, 'ModelsOutcome/banknote_svm_model.pkl')
+# joblib.dump(scaler, 'ModelsOutcome/banknote_scaler.pkl')
+# joblib.dump(list(X_train.columns), 'ModelsOutcome/banknote_feature_columns.pkl')
+#
+# print("model saved")
+#
 

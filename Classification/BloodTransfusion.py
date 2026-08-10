@@ -131,12 +131,12 @@ final_model.fit(X_train, y_train)
 y_pred_final = final_model.predict(X_test)
 y_proba_final = final_model.predict_proba(X_test)[:, 1]
 #
-# print("--- Random Forest - نتیجه‌ی نهایی روی Test ---")
-# print(f"Accuracy:  {accuracy_score(y_test, y_pred_final):.3f}")
-# print(f"Precision: {precision_score(y_test, y_pred_final):.3f}")
-# print(f"Recall:    {recall_score(y_test, y_pred_final):.3f}")
-# print(f"F1-score:  {f1_score(y_test, y_pred_final):.3f}")
-# print(f"ROC-AUC:   {roc_auc_score(y_test, y_proba_final):.3f}")
+print("--- Random Forest - نتیجه‌ی نهایی روی Test ---")
+print(f"Accuracy:  {accuracy_score(y_test, y_pred_final):.3f}")
+print(f"Precision: {precision_score(y_test, y_pred_final):.3f}")
+print(f"Recall:    {recall_score(y_test, y_pred_final):.3f}")
+print(f"F1-score:  {f1_score(y_test, y_pred_final):.3f}")
+print(f"ROC-AUC:   {roc_auc_score(y_test, y_proba_final):.3f}")
 
 # importances = final_model.feature_importances_
 # feature_names = X_train.columns
@@ -144,13 +144,9 @@ y_proba_final = final_model.predict_proba(X_test)[:, 1]
 #     'Feature': feature_names,
 #     'Importance': importances}).sort_values(by='Importance', ascending=False)
 # print(importances_df.to_string(index=False))
-
-import joblib
-
-joblib.dump(final_model, 'ModelsOutcome/random_forest_blood_donation_model.pkl')
-
-print("مدل با موفقیت ذخیره شد.")
-
-# تست بارگذاری مجدد (برای اطمینان از صحت ذخیره‌سازی)
-loaded_model = joblib.load('ModelsOutcome/random_forest_blood_donation_model.pkl')
-test_pred = loaded_model.predict(X_test)
+#
+# import joblib
+# joblib.dump(final_model, 'ModelsOutcome/blood_transfusion_model.pkl')
+# joblib.dump(list(X_train.columns), 'ModelsOutcome/blood_transfusion_feature_columns.pkl')
+#
+# print("model saved")

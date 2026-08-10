@@ -36,7 +36,6 @@ features = ['buying', 'maint', 'doors', 'persons', 'lug_boot', 'safety']
 # axes = axes.flatten()
 #
 # for i, col in enumerate(features):
-#     # جدول متقاطع: برای هر مقدار ستون، چند تا از هر کلاس داریم
 #     cross_tab = pd.crosstab(df[col], df['class'])
 #     cross_tab.plot(kind='bar', stacked=True, ax=axes[i], colormap='viridis')
 #     axes[i].set_title(f'{col} بر اساس class')
@@ -58,7 +57,6 @@ X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size = 0.2, rando
 # print(Y_test.value_counts(normalize=True) * 100)
 from sklearn.preprocessing import OrdinalEncoder
 
-# ترتیب صحیح مقادیر رو برای هر ستون مشخص می‌کنیم (از کم‌ارزش به پرارزش)
 category_orders = [
     ['low', 'med', 'high', 'vhigh'],      # buying
     ['low', 'med', 'high', 'vhigh'],      # maint
@@ -72,7 +70,6 @@ encoder = OrdinalEncoder(categories=category_orders)
 
 X_train_encoded = encoder.fit_transform(X_train)
 X_test_encoded = encoder.transform(X_test)
-# تبدیل به دیتافریم با اسم ستون‌های اصلی، برای خوانایی بهتر
 X_train_encoded = pd.DataFrame(X_train_encoded, columns=X_train.columns, index=X_train.index)
 X_test_encoded = pd.DataFrame(X_test_encoded, columns=X_test.columns, index=X_test.index)
 # print(X_train_encoded.head())
@@ -81,7 +78,6 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier
 from sklearn.metrics import classification_report, accuracy_score, f1_score
 
-# # تعریف مدل‌ها در یک دیکشنری برای مدیریت ساده‌تر
 models = {
     'Logistic Regression': LogisticRegression(max_iter=1000, random_state=42),
     'Random Forest': RandomForestClassifier(random_state=42),
@@ -91,13 +87,10 @@ models = {
 # results = {}
 #
 # for name, model in models.items():
-#     # آموزش مدل
 #     model.fit(X_train_encoded, Y_train)
-#
-#     # پیش‌بینی روی test
+
 #     Y_pred = model.predict(X_test_encoded)
-#
-#     # محاسبه‌ی معیارها
+
 #     acc = accuracy_score(Y_test, Y_pred)
 #     f1_macro = f1_score(Y_test, Y_pred, average='macro')
 #
@@ -111,7 +104,7 @@ models = {
 
 from sklearn.model_selection import StratifiedKFold, cross_val_score
 #
-# # چون کلاس‌ها نامتوازنن، از StratifiedKFold استفاده می‌کنیم
+
 # # (دقیقاً مثل stratify=y در train_test_split، ولی برای Cross-Validation)
 # skf = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
 #
@@ -134,17 +127,16 @@ from sklearn.model_selection import StratifiedKFold, cross_val_score
 
 import joblib
 
-# قدم ۱: آموزش نهایی روی کل train
 final_model = GradientBoostingClassifier(random_state=42)
 final_model.fit(X_train_encoded, Y_train)
 
-# قدم ۲: ارزیابی نهایی روی X_test دست‌نخورده
+
 y_test_pred = final_model.predict(X_test_encoded)
-print("===== ارزیابی نهایی روی Test Set =====")
 print(classification_report(Y_test, y_test_pred))
 
-# قدم ۳: ذخیره‌ی مدل و Encoder (هر دو لازمن برای استفاده‌ی بعدی!)
+
 joblib.dump(final_model, 'ModelsOutcome/car_evaluation_gb_model.pkl')
 joblib.dump(encoder, 'ModelsOutcome/car_evaluation_encoder.pkl')
+joblib.dump(list(X_train_encoded.columns), 'ModelsOutcome/car_evaluation_feature.pkl')
 
-print("\n✅ مدل و Encoder با موفقیت ذخیره شدن.")
+print("model saved")

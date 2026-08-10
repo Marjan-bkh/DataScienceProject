@@ -2,7 +2,6 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 
-# اسم ستون‌ها رو خودمون تعریف می‌کنیم چون فایل داده هدر نداره
 column_names = ['IR', 'MR', 'FF', 'CR', 'CO', 'OP', 'Class']
 #Industrial Risk (IR),Management Risk (MR),Financial Flexibility (FF),Credibility (CR),Competitiveness (CO),Operating Risk (OP)
 df = pd.read_csv('Datasets/Qualitative_Bankruptcy.data.txt', header=None, names=column_names)
@@ -12,20 +11,17 @@ df = pd.read_csv('Datasets/Qualitative_Bankruptcy.data.txt', header=None, names=
 # print(df['Class'].value_counts())
 
 features = ['IR', 'MR', 'FF', 'CR', 'CO', 'OP']
-#
-# # 1. توزیع هر فیچر به تنهایی
+
 # for col in features:
 #     print(f"--- {col} ---")
 #     print(df[col].value_counts())
 #     print()
-#
-# # 2. رابطه هر فیچر با Class (crosstab)
+
 # for col in features:
 #     print(f"--- {col} vs Class ---")
 #     print(pd.crosstab(df[col], df['Class']))
 #     print()
-#
-# # 3. نمودار میله‌ای برای هر فیچر به تفکیک کلاس
+
 # fig, axes = plt.subplots(2, 3, figsize=(15, 8))
 # axes = axes.flatten()
 #
@@ -38,18 +34,16 @@ features = ['IR', 'MR', 'FF', 'CR', 'CO', 'OP']
 # plt.tight_layout()
 # plt.show()
 
-# # نگاشت دستی: N بدترین=0, A متوسط=1, P بهترین=2
+# # N بدترین=0, A متوسط=1, P بهترین=2
 risk_mapping = {'N': 0, 'A': 1, 'P': 2}
 df_encoded = df.copy()
 for col in features:
     df_encoded[col] = df_encoded[col].map(risk_mapping)
-#
-# # هدف رو هم به 0/1 تبدیل می‌کنیم
+
 df_encoded['Class'] = df_encoded['Class'].map({'NB': 0, 'B': 1})
 # print(df_encoded.head(10))
 # print(df_encoded.dtypes)
-#
-# # بررسی همبستگی (چون الان همه عددی شدن)
+
 # print(df_encoded.corr()['Class'].sort_values(ascending=False))
 
 from sklearn.model_selection import train_test_split
@@ -66,9 +60,7 @@ X_train, X_test, y_train, y_test = train_test_split(
 
 # print("X_train shape:", X_train.shape)
 # print("X_test shape:", X_test.shape)
-# print("توزیع کلاس در train:")
 # print(y_train.value_counts(normalize=True))
-# print("توزیع کلاس در test:")
 # print(y_test.value_counts(normalize=True))
 
 from sklearn.linear_model import LogisticRegression
@@ -85,10 +77,9 @@ models = {
 # results = {}
 #
 # for name, model in models.items():
-#     # آموزش مدل روی داده train
+#
 #     model.fit(X_train, y_train)
 #
-#     # پیش‌بینی روی داده test
 #     y_pred = model.predict(X_test)
 #
 #     # محاسبه معیارها
@@ -112,8 +103,7 @@ models = {
 #     print("Confusion Matrix:")
 #     print(confusion_matrix(y_test, y_pred))
 #     print()
-#
-# # جدول مقایسه‌ای
+
 # results_df = pd.DataFrame(results).T
 # print(results_df)
 
@@ -130,25 +120,23 @@ cv = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
 
 import joblib
 
-# آموزش نهایی روی کل داده (train + test) برای بهره‌گیری از تمام اطلاعات موجود
 rf_production = RandomForestClassifier(random_state=42)
 rf_production.fit(X, y)
 
-# ذخیره مدل
-joblib.dump(rf_production, 'ModelsOutcome/bankruptcy_model.pkl')
+#
+# joblib.dump(rf_production, 'ModelsOutcome/bankruptcy_model.pkl')
+#
+# joblib.dump(risk_mapping, 'ModelsOutcome/bankruptcy_risk_mapping.pkl')
 
-# ذخیره نگاشت‌هایی که برای پیش‌پردازش داده‌ی جدید لازمن
-joblib.dump(risk_mapping, 'ModelsOutcome/risk_mapping.pkl')
-
-print("مدل با موفقیت ذخیره شد.")
-
-# تست بارگذاری مجدد و پیش‌بینی روی یک نمونه فرضی
-loaded_model = joblib.load('ModelsOutcome/bankruptcy_model.pkl')
-
-# مثال: یک شرکت با CO=N (بد) و بقیه هم نسبتاً بد
-sample = pd.DataFrame([[1, 1, 0, 0, 0, 1]], columns=features)  # IR=A, MR=A, FF=N, CR=N, CO=N, OP=A
-prediction = loaded_model.predict(sample)
-prediction_proba = loaded_model.predict_proba(sample)
-
-print("پیش‌بینی:", "Bankruptcy" if prediction[0] == 1 else "Non-Bankruptcy")
-print("احتمال هر کلاس [NB, B]:", prediction_proba)
+# joblib.dump(list(X_train.columns), 'ModelsOutcome/bankruptcy_feature.pkl')
+# print("model saved")
+#
+# loaded_model = joblib.load('ModelsOutcome/bankruptcy_model.pkl')
+#
+# #sample test
+# sample = pd.DataFrame([[1, 1, 0, 0, 0, 1]], columns=features)  # IR=A, MR=A, FF=N, CR=N, CO=N, OP=A
+# prediction = loaded_model.predict(sample)
+# prediction_proba = loaded_model.predict_proba(sample)
+#
+# print("پیش‌بینی:", "Bankruptcy" if prediction[0] == 1 else "Non-Bankruptcy")
+# print("احتمال هر کلاس [NB, B]:", prediction_proba)

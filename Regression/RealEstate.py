@@ -79,19 +79,28 @@ rmse = np.sqrt(mean_squared_error(y_test, y_pred))
 #
 # print(result.head(20))
 
-plt.figure(figsize=(8,6))
+# plt.figure(figsize=(8,6))
+#
+# plt.scatter(
+#     y_test,
+#     y_pred
+# )
+#
+# plt.xlabel("Actual Price")
+# plt.ylabel("Predicted Price")
+#
+# plt.title(
+#     "Actual vs Predicted"
+# )
+#
+# plt.show()
+#
+from sklearn.metrics import r2_score
+r2 = r2_score(y_test, y_pred)
+print(f"R²: {r2:.4f}")
 
-plt.scatter(
-    y_test,
-    y_pred
-)
-
-plt.xlabel("Actual Price")
-plt.ylabel("Predicted Price")
-
-plt.title(
-    "Actual vs Predicted"
-)
-
-plt.show()
-
+# import joblib
+#
+# joblib.dump(model, 'ModelsOutcome/real_estate_model.pkl')
+# joblib.dump(list(x_train.columns), 'ModelsOutcome/real_estate_feature_columns.pkl')
+# print('model saved')
