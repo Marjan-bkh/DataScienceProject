@@ -27,6 +27,12 @@ for col in categorical_features:
 df['workclass'] = df['workclass'].fillna('Unknown')
 df['occupation'] = df['occupation'].fillna('Unknown')
 df['native-country'] = df['native-country'].fillna('Unknown')
+# print("workclass:", sorted(df['workclass'].unique()))
+# print("marital-status:", sorted(df['marital-status'].unique()))
+# print("occupation:", sorted(df['occupation'].unique()))
+# print("relationship:", sorted(df['relationship'].unique()))
+# print("race:", sorted(df['race'].unique()))
+# print("native-country:", sorted(df['native-country'].unique()))
 # print(df.isnull().sum())
 df = df.drop('fnlwgt', axis=1)
 # print(df.groupby('education')['education-num'].unique())
@@ -123,6 +129,7 @@ for name, (model, X_tr, X_te) in models.items():
         'F1': f1_score(y_test_final, y_pred)
     })
 results_df = pd.DataFrame(results)
+# print(results_df.to_string(index=False))
 # print(results_df)
 
 # from sklearn.model_selection import StratifiedKFold, cross_val_score
@@ -138,12 +145,12 @@ results_df = pd.DataFrame(results)
 #     })
 # cv_results_df = pd.DataFrame(cv_results)
 # # print(cv_results_df)
-
-import joblib
-
-joblib.dump(rf_model, 'ModelsOutcome/adult_income_rf_model.pkl')
-joblib.dump(list(X_train_final.columns), 'ModelsOutcome/adult_income_columns.pkl')
-print("مدل و اسم فیچرها ذخیره شدن.")
+#
+# import joblib
+#
+# joblib.dump(rf_model, 'ModelsOutcome/persons_income_rf_model.pkl')
+# joblib.dump(list(X_train_final.columns), 'ModelsOutcome/persons_income_columns.pkl')
+# print("model saved")
 #
 # columns = joblib.load('adult_income_columns.pkl')
 # X_new = X_new.reindex(columns=columns, fill_value=0)

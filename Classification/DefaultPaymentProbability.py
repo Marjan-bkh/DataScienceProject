@@ -127,7 +127,7 @@ y_pred = final_model.predict(X_test)
 
 import joblib
 
-joblib.dump(final_model, 'ModelsOutcome/default_payment_random_forest_model.pkl')
-joblib.dump(list(X_train.columns), 'ModelsOutcome/default_payment_random_forest_model_features.pkl')
+joblib.dump(final_model, 'ModelsOutcome/default_payment_rf_model.pkl')
+joblib.dump(list(X_train.columns), 'ModelsOutcome/default_payment_features.pkl')
 
 print("model saved.")

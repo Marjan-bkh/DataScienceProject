@@ -15,6 +15,10 @@ from prediction_pages.blood_transfusion import PredictionPageBloodTransfusion
 from prediction_pages.car_evaluation import PredictionPageCarEvaluation
 from prediction_pages.bankruptcy import PredictionPageQualitativeBankruptcy
 from prediction_pages.heart_disease import PredictionPageHeartDisease
+from prediction_pages.heart_attack import PredictionPageEchocardiogram
+from prediction_pages.hepatitis import PredictionPageHepatitis
+from prediction_pages.autism import PredictionPageAutism
+from prediction_pages.persons_income import PredictionPagePersonsIncome
 
 
 class App(tk.Tk):
@@ -54,6 +58,11 @@ class App(tk.Tk):
         self.frames["prediction_car_evaluation"] = PredictionPageCarEvaluation(container, self)
         self.frames["prediction_qualitative_bankruptcy"] = PredictionPageQualitativeBankruptcy(container, self)
         self.frames["prediction_heart_disease"] = PredictionPageHeartDisease(container, self)
+        self.frames["prediction_echocardiogram"] = PredictionPageEchocardiogram(container, self)
+        self.frames["prediction_hepatitis"] = PredictionPageHepatitis(container, self)
+        self.frames["prediction_autism"] = PredictionPageAutism(container, self)
+        self.frames["prediction_persons_income"] = PredictionPagePersonsIncome(container, self)
+
 
 
 

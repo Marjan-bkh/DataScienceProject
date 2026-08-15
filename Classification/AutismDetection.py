@@ -26,7 +26,9 @@ same_rows = (df['ethnicity'].isnull() == df['relation'].isnull()).sum()
 df = df[df['age'] <= 100]
 df = df.dropna(subset=['age'])
 df['ethnicity'] = df['ethnicity'].fillna('Unknown')
+# print(df['ethnicity'].value_counts())
 df['relation'] = df['relation'].fillna('Unknown')
+# print(df['relation'].value_counts())
 # print(df.shape)
 # print(df.isnull().sum().sum())
 
@@ -75,7 +77,7 @@ import seaborn as sns
 # plt.show()
 #
 # print(f"{df['contry_of_res'].nunique()}")
-# print(df['contry_of_res'].value_counts().head(10))
+# print(df['contry_of_res'].value_counts())
 
 df = df.drop(columns=['age_desc'])
 a_cols = [f'A{i}_Score' for i in range(1, 11)]
@@ -215,11 +217,11 @@ coefficients = coefficients.sort_values(ascending=False)
 # print("\nتوپ ۱۰ ویژگی با بیشترین تاثیر مثبت:\n", coefficients.head(10))
 # print("\nتوپ ۵ ویژگی با بیشترین تاثیر منفی:\n", coefficients.tail(5))
 
-import joblib
-
-joblib.dump(final_model, 'ModelsOutcome/autism_lr_model.pkl')
-joblib.dump(list(X_train_scaled_no_result.columns), 'ModelsOutcome/autism_model_features.pkl')
-joblib.dump(scaler, 'ModelsOutcome/autism_scaler.pkl')
-
-print("model saved")
-
+# import joblib
+#
+# joblib.dump(final_model, 'ModelsOutcome/autism_lr_model.pkl')
+# joblib.dump(list(X_train_scaled_no_result.columns), 'ModelsOutcome/autism_model_features.pkl')
+# joblib.dump(scaler, 'ModelsOutcome/autism_scaler.pkl')
+#
+# print("model saved")
+#

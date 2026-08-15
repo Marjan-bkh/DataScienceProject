@@ -12,6 +12,7 @@ df = pd.read_csv('Datasets/hepatitis.data', header=None, names=columns, na_value
 # print(df.dtypes)
 # print(df.head())
 # print(df.isnull().sum())
+print(df.describe().to_string())
 missing = df.isnull().sum()
 missing_percent = (missing / len(df)) * 100
 missing_summary = pd.DataFrame({
@@ -126,7 +127,7 @@ from sklearn.svm import SVC
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.linear_model import LogisticRegression
 from sklearn.calibration import CalibratedClassifierCV
-from sklearn.metrics import accuracy_score
+from sklearn.metrics import accuracy_score, f1_score
 
 svm_base = SVC(kernel='rbf', class_weight='balanced', random_state=42)
 svm_calibrated = CalibratedClassifierCV(svm_base, ensemble=False)
@@ -140,7 +141,8 @@ for name, (model, X_tr, X_te) in models.items():
     model.fit(X_tr, y_train)
     predictions[name] = model.predict(X_te)
     acc = accuracy_score(y_test, predictions[name])
-    # print(f"{name}: Accuracy = {acc:.4f}")
+    f1 = f1_score(y_test, predictions[name])
+    print(f"{name}: Accuracy = {acc:.4f}, F1 = {f1:.4f}")
 
 from sklearn.metrics import confusion_matrix, classification_report
 # for name in models.keys():
@@ -167,5 +169,7 @@ import joblib
 final_model = RandomForestClassifier(n_estimators=100, class_weight='balanced', random_state=42)
 final_model.fit(X, y)
 
-joblib.dump(final_model, 'ModelsOutcome/hepatitis_rf_model.pkl')
-print("مدل ذخیره شد.")
+# joblib.dump(final_model, 'ModelsOutcome/hepatitis_rf_model.pkl')
+# feature_columns = X.columns.tolist()
+# joblib.dump(feature_columns, 'ModelsOutcome/hepatitis_feature.pkl')
+# print("model saved")

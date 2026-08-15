@@ -31,6 +31,14 @@ class CategoryPage(tk.Frame):
                       command=lambda: self.controller.show_frame("prediction_qualitative_bankruptcy")).pack(pady=5)
             tk.Button(self.list_frame, text="Heart Disease", width=30,
                       command=lambda: self.controller.show_frame("prediction_heart_disease")).pack(pady=5)
+            tk.Button(self.list_frame, text="Heart Attack Survival (Echocardiogram)", width=30,
+                      command=lambda: self.controller.show_frame("prediction_echocardiogram")).pack(pady=5)
+            tk.Button(self.list_frame, text="Hepatitis Survival", width=30,
+                      command=lambda: self.controller.show_frame("prediction_hepatitis")).pack(pady=5)
+            tk.Button(self.list_frame, text="Autism Screening (Adult)", width=30,
+                      command=lambda: self.controller.show_frame("prediction_autism")).pack(pady=5)
+            tk.Button(self.list_frame, text="Income Prediction (Adult Census)", width=30,
+                      command=lambda: self.controller.show_frame("prediction_persons_income")).pack(pady=5)
 
 
 
