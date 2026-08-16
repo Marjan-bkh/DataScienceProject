@@ -96,14 +96,16 @@ k_range_sil = range(2, 11)
 kmeans_k2 = KMeans(n_clusters=2, random_state=42, n_init=10)
 labels_k2 = kmeans_k2.fit_predict(df_scaled)
 df['cluster_k2'] = labels_k2
-# print(df['cluster_k2'].value_counts())
-# print(df.groupby('cluster_k2')[['mcv', 'alkphos', 'sgpt', 'sgot', 'gammagt', 'drinks']].mean().round(2))
+print(df['cluster_k2'].value_counts())
+print(df.groupby('cluster_k2')[['mcv', 'alkphos', 'sgpt', 'sgot', 'gammagt', 'drinks']].mean().round(2))
 
-import joblib
 
-joblib.dump(kmeans_k2, 'ModelsOutcome/liver_disorder_kmeans_k2_model.pkl')
-
-joblib.dump(scaler, 'ModelsOutcome/liver_disorder_scaler.pkl')
-
-joblib.dump(cols_to_log, 'ModelsOutcome/liver_disorder_cols_to_log.pkl')
-print("مدل و Scaler با موفقیت ذخیره شدن.")
+# print(scaler.feature_names_in_)
+# import joblib
+#
+# joblib.dump(kmeans_k2, 'ModelsOutcome/liver_disorder_kmeans_k2_model.pkl')
+#
+# joblib.dump(scaler, 'ModelsOutcome/liver_disorder_scaler.pkl')
+#
+# joblib.dump(cols_to_log, 'ModelsOutcome/liver_disorder_cols_to_log.pkl')
+# print("model saved")

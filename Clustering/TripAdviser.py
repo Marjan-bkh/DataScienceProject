@@ -78,8 +78,9 @@ df['Cluster'] = cluster_labels
 # plt.colorbar(scatter, label='Cluster')
 # plt.show()
 
-# cluster_profile = df.groupby('Cluster')[df_features.columns.tolist()].mean()
-# print(cluster_profile.round(2))
+cluster_profile = df.groupby('Cluster')[df_features.columns.tolist()].mean()
+# print(cluster_profile.round(2).to_string())
+# print(df['Cluster'].value_counts().sort_index())
 #
 # cluster_profile_viz = cluster_profile.T
 # cluster_profile_viz.plot(kind='bar', figsize=(14, 6))
@@ -108,7 +109,7 @@ dendrogram(linked, truncate_mode='lastp', p=30)
 # hierarchical = AgglomerativeClustering(n_clusters=3, linkage='ward')
 # hier_labels = hierarchical.fit_predict(df_scaled)
 # print(pd.Series(hier_labels).value_counts().sort_index())
-
+#
 import joblib
 
 joblib.dump(kmeans_final, 'ModelsOutcome/trip_adviser_kmeans_clusters.pkl')
@@ -117,4 +118,4 @@ joblib.dump(scaler, 'ModelsOutcome/trip_adviser_scaler_clusters.pkl')
 feature_columns = df_features.columns.tolist()
 joblib.dump(feature_columns, 'ModelsOutcome/trip_adviser_feature_columns.pkl')
 
-print("مدل، اسکیلر و لیست فیچرها ذخیره شدند.")
+print("model saved")

@@ -44,6 +44,7 @@ train = train.drop(columns=['Humidity'])
 test1 = test1.drop(columns=['Humidity'])
 test2 = test2.drop(columns=['Humidity'])
 # print(train.columns.tolist())
+print(train[['Temperature', 'Light', 'CO2', 'HumidityRatio']].describe())
 
 feature_cols = ['Temperature', 'Light', 'CO2', 'HumidityRatio']
 X_train = train[feature_cols]
@@ -108,13 +109,13 @@ y_pred_test2 = best_model.predict(X_test2)
 # disp2.plot(cmap='Greens')
 # plt.title('Confusion Matrix - Logistic Regression on Test2 (Final)')
 # plt.show()
-
-import joblib
-
-joblib.dump(best_model, 'ModelsOutcome/room_occupancy_logreg_model.pkl')
-joblib.dump(feature_cols, 'ModelsOutcome/room_occupancy_feature_columns.pkl')
-print("مدل و اسم فیچرها ذخیره شدن.")
-# print(feature_cols)
-
-loaded_model = joblib.load('ModelsOutcome/room_occupancy_logreg_model.pkl')
-loaded_features = joblib.load('ModelsOutcome/room_occupancy_feature_columns.pkl')
+#
+# import joblib
+#
+# joblib.dump(best_model, 'ModelsOutcome/room_occupancy_logreg_model.pkl')
+# joblib.dump(feature_cols, 'ModelsOutcome/room_occupancy_feature_columns.pkl')
+# print("model saved")
+# # print(feature_cols)
+#
+# loaded_model = joblib.load('ModelsOutcome/room_occupancy_logreg_model.pkl')
+# loaded_features = joblib.load('ModelsOutcome/room_occupancy_feature_columns.pkl')

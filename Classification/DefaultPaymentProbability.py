@@ -86,24 +86,24 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
 
-# models = {
-#     'Logistic Regression': (LogisticRegression(class_weight='balanced', max_iter=1000, random_state=42), X_train_scaled, X_test_scaled),
-#     'Random Forest': (RandomForestClassifier(class_weight='balanced', random_state=42), X_train, X_test),
-#     'Gradient Boosting': (GradientBoostingClassifier(random_state=42), X_train, X_test),
-# }
-# results = []
-# for name, (model, X_tr, X_te) in models.items():
-#     model.fit(X_tr, y_train)
-#     y_pred = model.predict(X_te)
-#     results.append({
-#         'Model': name,
-#         'Accuracy': accuracy_score(y_test, y_pred),
-#         'Precision': precision_score(y_test, y_pred),
-#         'Recall': recall_score(y_test, y_pred),
-#         'F1': f1_score(y_test, y_pred)
-#     })
-# results_df = pd.DataFrame(results)
-# print(results_df)
+models = {
+    'Logistic Regression': (LogisticRegression(class_weight='balanced', max_iter=1000, random_state=42), X_train_scaled, X_test_scaled),
+    'Random Forest': (RandomForestClassifier(class_weight='balanced', random_state=42), X_train, X_test),
+    'Gradient Boosting': (GradientBoostingClassifier(random_state=42), X_train, X_test),
+}
+results = []
+for name, (model, X_tr, X_te) in models.items():
+    model.fit(X_tr, y_train)
+    y_pred = model.predict(X_te)
+    results.append({
+        'Model': name,
+        'Accuracy': accuracy_score(y_test, y_pred),
+        'Precision': precision_score(y_test, y_pred),
+        'Recall': recall_score(y_test, y_pred),
+        'F1': f1_score(y_test, y_pred)
+    })
+results_df = pd.DataFrame(results)
+print(results_df)
 
 from sklearn.model_selection import cross_validate
 
@@ -124,10 +124,10 @@ from sklearn.model_selection import cross_validate
 final_model = RandomForestClassifier(class_weight='balanced', random_state=42)
 final_model.fit(X_train, y_train)
 y_pred = final_model.predict(X_test)
-
-import joblib
-
-joblib.dump(final_model, 'ModelsOutcome/default_payment_rf_model.pkl')
-joblib.dump(list(X_train.columns), 'ModelsOutcome/default_payment_features.pkl')
-
-print("model saved.")
+#
+# import joblib
+#
+# joblib.dump(final_model, 'ModelsOutcome/default_payment_rf_model.pkl')
+# joblib.dump(list(X_train.columns), 'ModelsOutcome/default_payment_features.pkl')
+#
+# print("model saved.")

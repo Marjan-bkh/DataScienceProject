@@ -159,11 +159,13 @@ weekly['Growth_Rate_rolling3'] = weekly.groupby('Country/Region')['Growth_Rate']
 # print(weekly[['Growth_Rate_lag1','Growth_Rate_lag2','CFR_lag1','CFR_lag2','Growth_Rate_rolling3']].isnull().sum())
 
 weekly_clean = weekly.dropna(subset=['Growth_Rate_lag1','Growth_Rate_lag2','CFR_lag1','CFR_lag2','Growth_Rate_rolling3']).copy()
+# print(weekly_clean[['Growth_Rate_lag1', 'Growth_Rate_lag2', 'CFR_lag1', 'CFR_lag2', 'Growth_Rate_rolling3']].describe().to_string())
+
 # print(weekly_clean.shape)
 feature_cols_v2 = ['Growth_Rate_lag1', 'Growth_Rate_lag2', 'CFR_lag1', 'CFR_lag2', 'Growth_Rate_rolling3']
 X2 = weekly_clean[feature_cols_v2]
 y2 = weekly_clean['Risk_Level']
-# print(X2.describe())
+# print(X2.describe().to_string())
 
 weekly_clean = weekly_clean.sort_values('Date')
 cutoff_date2 = weekly_clean['Date'].quantile(0.8, interpolation='nearest')
@@ -203,6 +205,9 @@ results_df2 = pd.DataFrame(results2)
 best_model2 = GradientBoostingClassifier(random_state=42)
 best_model2.fit(X2_train, y2_train)
 y_pred2 = best_model2.predict(X2_test)
+from sklearn.metrics import accuracy_score, f1_score
+# print(f"Accuracy: {accuracy_score(y2_test, y_pred2):.4f}")
+# print(f"F1-macro: {f1_score(y2_test, y_pred2, average='macro'):.4f}")
 
 # print(confusion_matrix(y2_test, y_pred2, labels=['Low', 'Medium', 'High']))
 # print(classification_report(y2_test, y_pred2, labels=['Low', 'Medium', 'High']))

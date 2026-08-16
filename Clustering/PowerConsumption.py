@@ -150,16 +150,16 @@ features['KMeans_Cluster'] = kmeans_labels
 # print(features['Hierarchical_Cluster'].value_counts().sort_index())
 # print(silhouette_score(features_scaled, hierarchical_labels))
 
-# cluster_profile = features.groupby('KMeans_Cluster')[
-#     ['Global_active_power_mean', 'Global_active_power_max',
-#      'Global_reactive_power_mean', 'Sub_metering_1_ratio',
-#      'Sub_metering_2_ratio', 'Sub_metering_3_ratio',
-#      'Global_active_power_cv']
-# ].mean()
+cluster_profile = features.groupby('KMeans_Cluster')[
+    ['Global_active_power_mean', 'Global_active_power_max',
+     'Global_reactive_power_mean', 'Sub_metering_1_ratio',
+     'Sub_metering_2_ratio', 'Sub_metering_3_ratio',
+     'Global_active_power_cv']
+].mean()
 # print(cluster_profile.round(3).to_string())
 # print("days count")
 # print(features['KMeans_Cluster'].value_counts().sort_index())
-
+#
 import joblib
 feature_columns = ['Global_active_power_mean', 'Global_active_power_max',
                     'Global_reactive_power_mean', 'Sub_metering_1_ratio',
@@ -170,4 +170,4 @@ joblib.dump(kmeans_final, 'ModelsOutcome/power_consumption_kmeans_model.pkl')
 joblib.dump(scaler, 'ModelsOutcome/power_consumption_scaler.pkl')
 joblib.dump(feature_columns, 'ModelsOutcome/power_consumption_feature_columns.pkl')
 features.to_csv('Datasets/power_consumption_daily_with_clusters.csv')
-print("ذخیره شد.")
+print("model saved")

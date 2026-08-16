@@ -39,8 +39,16 @@ class CategoryPage(tk.Frame):
                       command=lambda: self.controller.show_frame("prediction_autism")).pack(pady=5)
             tk.Button(self.list_frame, text="Income Prediction (Adult Census)", width=30,
                       command=lambda: self.controller.show_frame("prediction_persons_income")).pack(pady=5)
-
-
+            tk.Button(self.list_frame, text="Credit Card Default", width=30,
+                      command=lambda: self.controller.show_frame("prediction_credit_default")).pack(pady=5)
+            tk.Button(self.list_frame, text="Glass Type Identification", width=30,
+                      command=lambda: self.controller.show_frame("prediction_glass")).pack(pady=5)
+            tk.Button(self.list_frame, text="Room Occupancy Detection", width=30,
+                      command=lambda: self.controller.show_frame("prediction_room_occupancy")).pack(pady=5)
+            tk.Button(self.list_frame, text="COVID-19 Risk Level", width=30,
+                      command=lambda: self.controller.show_frame("prediction_covid_risk")).pack(pady=5)
+            tk.Button(self.list_frame, text="Online News Popularity (Viral?)", width=30,
+                      command=lambda: self.controller.show_frame("prediction_online_news_classification")).pack(pady=5)
 
         elif category == "regression":
             tk.Button(self.list_frame, text="Bike Rental Demand", width=30,
@@ -61,5 +69,18 @@ class CategoryPage(tk.Frame):
                       command=lambda: self.controller.show_frame("prediction_real_estate")).pack(pady=5)
             tk.Button(self.list_frame, text="Online News Popularity", width=30,
                       command=lambda: self.controller.show_frame("prediction_online_news")).pack(pady=5)
+
+
+        elif category == "clustering":
+            tk.Button(self.list_frame, text="Liver Disorder Profile", width=30,
+                      command=lambda: self.controller.show_frame("prediction_liver_disorder")).pack(pady=5)
+            tk.Button(self.list_frame, text="Student Knowledge Level", width=30,
+                      command=lambda: self.controller.show_frame("prediction_student_knowledge")).pack(pady=5)
+            tk.Button(self.list_frame, text="Wholesale Customer Segmentation", width=30,
+                      command=lambda: self.controller.show_frame("prediction_wholesale_customers")).pack(pady=5)
+            tk.Button(self.list_frame, text="Household Power Consumption", width=30,
+                      command=lambda: self.controller.show_frame("prediction_power_consumption")).pack(pady=5)
+            tk.Button(self.list_frame, text="Traveler Type (TripAdvisor)", width=30,
+                      command=lambda: self.controller.show_frame("prediction_travel_review")).pack(pady=5)
         else:
             tk.Label(self.list_frame, text="No datasets added yet.").pack()

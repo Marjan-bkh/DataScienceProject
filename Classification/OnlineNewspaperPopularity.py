@@ -91,12 +91,17 @@ models = {
 #     })
 # results_df = pd.DataFrame(results)
 # print(results_df.to_string())
+#
 
-import joblib
-
+#
 final_model = GradientBoostingClassifier(random_state=42)
 final_model.fit(X_train, y_train)
+from sklearn.metrics import accuracy_score, f1_score
+y_pred_final = final_model.predict(X_test)
+print(f"Accuracy: {accuracy_score(y_test, y_pred_final):.4f}")
+print(f"F1: {f1_score(y_test, y_pred_final):.4f}")
 
+import joblib
 joblib.dump(final_model, 'ModelsOutcome/online_news_popularity_gb_model.pkl')
 
 joblib.dump(list(X_train.columns), 'ModelsOutcome/online_news_popularity_feature_columns.pkl')

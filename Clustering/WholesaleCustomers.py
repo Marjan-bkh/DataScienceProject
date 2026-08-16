@@ -102,29 +102,24 @@ labels_2 = kmeans_2.fit_predict(X_scaled)
 kmeans_3 = KMeans(n_clusters=3, random_state=42, n_init=10)
 labels_3 = kmeans_3.fit_predict(X_scaled)
 
-# # اضافه کردن label ها به دیتافریم اصلی برای بررسی
-# df_result = df.copy()
-# df_result['Cluster_k2'] = labels_2
+df_result = df.copy()
+df_result['Cluster_k2'] = labels_2
 # df_result['Cluster_k3'] = labels_3
-#
-# # چند نفر توی هر cluster هستن؟
-# print(df_result['Cluster_k2'].value_counts().sort_index())
+
+print(df_result['Cluster_k2'].value_counts().sort_index())
 # print(df_result['Cluster_k3'].value_counts().sort_index())
-#
-# # میانگین هر ستون هزینه به تفکیک cluster (روی داده خام، نه log/scaled - برای تفسیر ساده‌تر)
-# print(df_result.groupby('Cluster_k2')[cols].mean().round(1))
+
+print(df_result.groupby('Cluster_k2')[cols].mean().round(1))
 # print(df_result.groupby('Cluster_k3')[cols].mean().round(1))
 #
-# # مقایسه با Channel واقعی (که کنار گذاشته بودیم)
-# print(pd.crosstab(df_result['Cluster_k2'], df_result['Channel']))
+print(pd.crosstab(df_result['Cluster_k2'], df_result['Channel']))
 # print(pd.crosstab(df_result['Cluster_k3'], df_result['Channel']))
 
-import joblib
-joblib.dump(kmeans_2, 'ModelsOutcome/wholesale_kmeans_model.pkl')
-joblib.dump(scaler, 'ModelsOutcome/wholesale_scaler.pkl')
-# ذخیره اسم ستون‌ها هم به صورت جدا (برای اطمینان از ترتیب درست در آینده)
-joblib.dump(cols, 'ModelsOutcome/wholesale_feature_columns.pkl')
-print("مدل، اسکیلر و اسم ستون‌ها با موفقیت ذخیره شدن.")
-
-loaded_model = joblib.load('ModelsOutcome/wholesale_kmeans_model.pkl')
-loaded_scaler = joblib.load('ModelsOutcome/wholesale_scaler.pkl')
+# import joblib
+# joblib.dump(kmeans_2, 'ModelsOutcome/wholesale_kmeans_model.pkl')
+# joblib.dump(scaler, 'ModelsOutcome/wholesale_scaler.pkl')
+# joblib.dump(cols, 'ModelsOutcome/wholesale_feature_columns.pkl')
+# print("model saved")
+#
+# loaded_model = joblib.load('ModelsOutcome/wholesale_kmeans_model.pkl')
+# loaded_scaler = joblib.load('ModelsOutcome/wholesale_scaler.pkl')

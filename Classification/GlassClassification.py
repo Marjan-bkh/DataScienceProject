@@ -11,6 +11,7 @@ df = df.drop('Id', axis=1)
 # print(df.info())
 # print(df['Type'].value_counts().sort_index())
 # print(df.describe())
+# print(df[['RI', 'Na', 'Mg', 'Al', 'Si', 'K', 'Ca', 'Ba', 'Fe']].describe().to_string())
 #
 # df.drop('Type', axis=1).hist(figsize=(12, 10), bins=20, edgecolor='black')
 # plt.tight_layout()
@@ -116,15 +117,12 @@ importances = importances.sort_values(ascending=False)
 # plt.title('Random Forest - Feature Importance')
 # plt.tight_layout()
 # plt.show()
+#
+# import joblib
+#
+# joblib.dump(rf_model, 'ModelsOutcome/glass_type_rf_model.pkl')
+# joblib.dump(list(X_train.columns), 'ModelsOutcome/glass_model_features.pkl')
+#
+# print("model saved")
+# print(list(X_train.columns))
 
-import joblib
-
-joblib.dump(rf_model, 'ModelsOutcome/glass_type_rf_model.pkl')
-joblib.dump(list(X_train.columns), 'ModelsOutcome/glass_model_features.pkl')
-
-print("مدل با موفقیت ذخیره شد.")
-print("فیچرهای مورد نیاز مدل:", list(X_train.columns))
-
-loaded_model = joblib.load('ModelsOutcome/glass_type_rf_model.pkl')
-test_pred = loaded_model.predict(X_test)
-print(accuracy_score(y_test, test_pred))

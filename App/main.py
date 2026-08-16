@@ -19,6 +19,16 @@ from prediction_pages.heart_attack import PredictionPageEchocardiogram
 from prediction_pages.hepatitis import PredictionPageHepatitis
 from prediction_pages.autism import PredictionPageAutism
 from prediction_pages.persons_income import PredictionPagePersonsIncome
+from prediction_pages.default_payment import PredictionPageCreditDefault
+from prediction_pages.glass import PredictionPageGlass
+from prediction_pages.room_occupancy import PredictionPageRoomOccupancy
+from prediction_pages.covid_risk import PredictionPageCovidRisk
+from prediction_pages.online_news_classification import PredictionPageOnlineNewsClassification
+from prediction_pages.liver_disorder import PredictionPageLiverDisorder
+from prediction_pages.student_knowledge import PredictionPageStudentKnowledge
+from prediction_pages.wholesale_customers import PredictionPageWholesaleCustomers
+from prediction_pages.power_consumption import PredictionPagePowerConsumption
+from prediction_pages.travel_review import PredictionPageTravelReview
 
 
 class App(tk.Tk):
@@ -62,6 +72,18 @@ class App(tk.Tk):
         self.frames["prediction_hepatitis"] = PredictionPageHepatitis(container, self)
         self.frames["prediction_autism"] = PredictionPageAutism(container, self)
         self.frames["prediction_persons_income"] = PredictionPagePersonsIncome(container, self)
+        self.frames["prediction_credit_default"] = PredictionPageCreditDefault(container, self)
+        self.frames["prediction_glass"] = PredictionPageGlass(container, self)
+        self.frames["prediction_room_occupancy"] = PredictionPageRoomOccupancy(container, self)
+        self.frames["prediction_covid_risk"] = PredictionPageCovidRisk(container, self)
+        self.frames["prediction_online_news_classification"] = PredictionPageOnlineNewsClassification(container, self)
+        self.frames["prediction_liver_disorder"] = PredictionPageLiverDisorder(container, self)
+        self.frames["prediction_student_knowledge"] = PredictionPageStudentKnowledge(container, self)
+        self.frames["prediction_wholesale_customers"] = PredictionPageWholesaleCustomers(container, self)
+        self.frames["prediction_power_consumption"] = PredictionPagePowerConsumption(container, self)
+        self.frames["prediction_travel_review"] = PredictionPageTravelReview(container, self)
+
+
 
 
 
