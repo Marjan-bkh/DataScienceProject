@@ -1,68 +1,45 @@
-import joblib
-model = joblib.load("ModelsOutcome/trip_adviser_kmeans_clusters.pkl")
-print(model)
-features = joblib.load("ModelsOutcome/trip_adviser_feature_columns.pkl")
-print(features)
-
-encoder = joblib.load("ModelsOutcome/trip_adviser_scaler_clusters.pkl")
-print(encoder)
-
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-df = pd.read_csv('Datasets/tripadvisor_review.csv')
+columns = ['mcv', 'alkphos', 'sgpt', 'sgot', 'gammagt', 'drinks', 'selector']
+df = pd.read_csv('Datasets/bupa.data', header=None, names=columns)
+df = df.drop(columns=['selector'])
 
-df_features = df.drop(columns=['User ID', 'Category 7'])
+features = ['mcv', 'alkphos', 'sgpt', 'sgot', 'gammagt', 'drinks']
+
+import numpy as np
+df_log = df.copy()
+cols_to_log = ['sgpt', 'sgot', 'gammagt','alkphos', 'drinks']
+for col in cols_to_log:
+    df_log[col] = np.log1p(df_log[col])
+
 from sklearn.preprocessing import StandardScaler
 scaler = StandardScaler()
-scaled_data = scaler.fit_transform(df_features)
-df_scaled = pd.DataFrame(scaled_data, columns=df_features.columns)
+df_scaled = scaler.fit_transform(df_log)
+df_scaled = pd.DataFrame(df_scaled, columns=df_log.columns)
 
 from sklearn.cluster import KMeans
+
+inertia_values = []
+k_range = range(1, 11)
+
+for k in k_range:
+    kmeans = KMeans(n_clusters=k, random_state=42, n_init=10)
+    kmeans.fit(df_scaled)
+    inertia_values.append(kmeans.inertia_)
+
 from sklearn.metrics import silhouette_score
 
-# inertia_list = []
-# silhouette_list = []
-# k_range = range(2, 11)
-# for k in k_range:
-#     kmeans = KMeans(n_clusters=k, random_state=42, n_init=10)
-#     labels = kmeans.fit_predict(df_scaled)
-#     inertia_list.append(kmeans.inertia_)
-#     silhouette_list.append(silhouette_score(df_scaled, labels))
+silhouette_scores = []
+k_range_sil = range(2, 11)
 
-# for k, sil in zip(k_range, silhouette_list):
-#     print(f"k={k}: silhouette={sil:.4f}")
+kmeans_k2 = KMeans(n_clusters=2, random_state=42, n_init=10)
+labels_k2 = kmeans_k2.fit_predict(df_scaled)
+df['cluster_k2'] = labels_k2
+score = silhouette_score(df_scaled, labels_k2)
+print(f"silhouette score = {score:.4f}")
+print(df['cluster_k2'].value_counts())
+print(df.groupby('cluster_k2')[['mcv', 'alkphos', 'sgpt', 'sgot', 'gammagt', 'drinks']].mean().round(2))
 
-kmeans_final = KMeans(n_clusters=3, random_state=42, n_init=10)
-cluster_labels = kmeans_final.fit_predict(df_scaled)
-df['Cluster'] = cluster_labels
-
-
-# cluster_profile = df.groupby('Cluster')[df_features.columns.tolist()].mean()
-# print(cluster_profile.round(2))
-#
-# cluster_profile_viz = cluster_profile.T
-# cluster_profile_viz.plot(kind='bar', figsize=(14, 6))
-
-# outlier_cluster = df[df['Cluster'] == 1]
-# print(outlier_cluster[df_features.columns].describe())
-# print(outlier_cluster[['Category 4']].sort_values('Category 4', ascending=False))
-
-from scipy.cluster.hierarchy import dendrogram, linkage
-from sklearn.cluster import AgglomerativeClustering
-
-linked = linkage(df_scaled, method='ward')
-plt.figure(figsize=(14, 6))
-dendrogram(linked, truncate_mode='lastp', p=30)
-
-import joblib
-
-joblib.dump(kmeans_final, 'ModelsOutcome/trip_adviser_kmeans_clusters.pkl')
-joblib.dump(scaler, 'ModelsOutcome/trip_adviser_scaler_clusters.pkl')
-
-feature_columns = df_features.columns.tolist()
-joblib.dump(feature_columns, 'ModelsOutcome/trip_adviser_feature_columns.pkl')
-
-print("model saved")

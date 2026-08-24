@@ -61,6 +61,8 @@ from sklearn.metrics import silhouette_score
 
 kmeans_final = KMeans(n_clusters=3, random_state=42, n_init=10)
 cluster_labels = kmeans_final.fit_predict(df_scaled)
+score = silhouette_score(df_scaled, cluster_labels)
+print(f"silhouette score = {score:.3f}")
 df['Cluster'] = cluster_labels
 # print(df['Cluster'].value_counts().sort_index())
 #
@@ -109,13 +111,13 @@ dendrogram(linked, truncate_mode='lastp', p=30)
 # hierarchical = AgglomerativeClustering(n_clusters=3, linkage='ward')
 # hier_labels = hierarchical.fit_predict(df_scaled)
 # print(pd.Series(hier_labels).value_counts().sort_index())
+# #
+# import joblib
 #
-import joblib
-
-joblib.dump(kmeans_final, 'ModelsOutcome/trip_adviser_kmeans_clusters.pkl')
-joblib.dump(scaler, 'ModelsOutcome/trip_adviser_scaler_clusters.pkl')
-
-feature_columns = df_features.columns.tolist()
-joblib.dump(feature_columns, 'ModelsOutcome/trip_adviser_feature_columns.pkl')
-
-print("model saved")
+# joblib.dump(kmeans_final, 'ModelsOutcome/trip_adviser_kmeans_clusters.pkl')
+# joblib.dump(scaler, 'ModelsOutcome/trip_adviser_scaler_clusters.pkl')
+#
+# feature_columns = df_features.columns.tolist()
+# joblib.dump(feature_columns, 'ModelsOutcome/trip_adviser_feature_columns.pkl')
+#
+# print("model saved")

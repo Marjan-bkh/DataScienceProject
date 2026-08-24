@@ -1,3 +1,4 @@
 Regression/ModelsOutcome/bike_rental_model.pkl
 Clustering/Datasets/household_power_consumption.txt
 *.pkl
+TextAnalysis/DataSets/Reviews.csv

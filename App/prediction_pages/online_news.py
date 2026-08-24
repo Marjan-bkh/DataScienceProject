@@ -37,6 +37,22 @@ MEDIAN_DEFAULTS = {
     'avg_negative_polarity': -0.25339023919750003, 'min_negative_polarity': -0.5, 'max_negative_polarity': -0.1,
 }
 
+SUBJECTIVITY_MAP = {
+    "Very Factual": 0.1,
+    "Mostly Factual": 0.3,
+    "Balanced": 0.5,
+    "Mostly Opinionated": 0.7,
+    "Very Opinionated": 0.9,
+}
+
+SENTIMENT_MAP = {
+    "Very Negative": -0.8,
+    "Somewhat Negative": -0.4,
+    "Neutral": 0.0,
+    "Somewhat Positive": 0.4,
+    "Very Positive": 0.8,
+}
+
 
 class PredictionPageOnlineNews(tk.Frame):
     def __init__(self, parent, controller):

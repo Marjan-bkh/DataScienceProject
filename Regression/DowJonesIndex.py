@@ -149,7 +149,7 @@ y_pred_final = final_model.predict(X_test_v2)
 r2_final = r2_score(y_test, y_pred_final)
 mae_final = mean_absolute_error(y_test, y_pred_final)
 rmse_final = mean_squared_error(y_test, y_pred_final) ** 0.5
-print(f"R2: {r2_final:.4f}")
+# print(f"R2: {r2_final:.4f}")
 # print(f"MAE: {mae_final:.4f}")
 # print(f"RMSE: {rmse_final:.4f}")
 
@@ -171,3 +171,27 @@ print(f"R2: {r2_final:.4f}")
 # joblib.dump(list(X_train_v2.columns), 'ModelsOutcome/dow_jones_feature_columns.pkl')
 # joblib.dump(scaler_v2, 'ModelsOutcome/dow_jones_scaler.pkl')
 # print('model saved')
+
+
+from sklearn.dummy import DummyRegressor
+
+# ۱. baseline ساده: فقط میانگین train رو پیش‌بینی کن
+dummy = DummyRegressor(strategy='mean')
+dummy.fit(X_train_v2, y_train)
+y_pred_dummy = dummy.predict(X_test_v2)
+r2_dummy = r2_score(y_test, y_pred_dummy)
+print(f"Baseline (mean) R2: {r2_dummy:.4f}")
+print(f"Model R2: {r2_final:.4f}")
+
+# ۲. آیا توزیع target بین train و test فرق زیادی داره؟
+print("\ny_train stats:")
+print(y_train.describe())
+print("\ny_test stats:")
+print(y_test.describe())
+
+# ۳. دقت جهت‌گیری (آیا مدل درست تشخیص میده صعودی/نزولی؟)
+import numpy as np
+direction_actual = (y_test > 0).astype(int)
+direction_pred = (y_pred_final > 0).astype(int)
+directional_accuracy = (direction_actual == direction_pred).mean()
+print(f"\nDirectional Accuracy: {directional_accuracy:.4f}")

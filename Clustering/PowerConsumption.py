@@ -130,7 +130,7 @@ kmeans_final = KMeans(n_clusters=4, random_state=42, n_init=10)
 kmeans_labels = kmeans_final.fit_predict(features_scaled)
 features['KMeans_Cluster'] = kmeans_labels
 # print(features['KMeans_Cluster'].value_counts().sort_index())
-# print(silhouette_score(features_scaled, kmeans_labels))
+print(silhouette_score(features_scaled, kmeans_labels))
 
 # from scipy.cluster.hierarchy import dendrogram, linkage
 # from sklearn.cluster import AgglomerativeClustering
@@ -160,14 +160,14 @@ cluster_profile = features.groupby('KMeans_Cluster')[
 # print("days count")
 # print(features['KMeans_Cluster'].value_counts().sort_index())
 #
-import joblib
-feature_columns = ['Global_active_power_mean', 'Global_active_power_max',
-                    'Global_reactive_power_mean', 'Sub_metering_1_ratio',
-                    'Sub_metering_2_ratio', 'Sub_metering_3_ratio',
-                    'Global_active_power_cv']
-
-joblib.dump(kmeans_final, 'ModelsOutcome/power_consumption_kmeans_model.pkl')
-joblib.dump(scaler, 'ModelsOutcome/power_consumption_scaler.pkl')
-joblib.dump(feature_columns, 'ModelsOutcome/power_consumption_feature_columns.pkl')
-features.to_csv('Datasets/power_consumption_daily_with_clusters.csv')
-print("model saved")
+# import joblib
+# feature_columns = ['Global_active_power_mean', 'Global_active_power_max',
+#                     'Global_reactive_power_mean', 'Sub_metering_1_ratio',
+#                     'Sub_metering_2_ratio', 'Sub_metering_3_ratio',
+#                     'Global_active_power_cv']
+#
+# joblib.dump(kmeans_final, 'ModelsOutcome/power_consumption_kmeans_model.pkl')
+# joblib.dump(scaler, 'ModelsOutcome/power_consumption_scaler.pkl')
+# joblib.dump(feature_columns, 'ModelsOutcome/power_consumption_feature_columns.pkl')
+# features.to_csv('Datasets/power_consumption_daily_with_clusters.csv')
+# print("model saved")

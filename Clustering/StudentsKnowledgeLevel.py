@@ -54,17 +54,17 @@ X_scaled = pd.DataFrame(X_scaled, columns=features)
 from sklearn.cluster import KMeans
 from sklearn.metrics import silhouette_score
 
-k_range = range(2, 11)
-inertia_values = []  # برای Elbow Method
-silhouette_values = []  # برای Silhouette Score
-
-for k in k_range:
-    kmeans = KMeans(n_clusters=k, init='k-means++', n_init=10, random_state=42)
-    cluster_labels = kmeans.fit_predict(X_scaled)
-
-    inertia_values.append(kmeans.inertia_)
-    sil_score = silhouette_score(X_scaled, cluster_labels)
-    silhouette_values.append(sil_score)
+# k_range = range(2, 11)
+# inertia_values = []  # برای Elbow Method
+# silhouette_values = []  # برای Silhouette Score
+#
+# for k in k_range:
+#     kmeans = KMeans(n_clusters=k, init='k-means++', n_init=10, random_state=42)
+#     cluster_labels = kmeans.fit_predict(X_scaled)
+#
+#     inertia_values.append(kmeans.inertia_)
+#     sil_score = silhouette_score(X_scaled, cluster_labels)
+#     silhouette_values.append(sil_score)
 #     print(f"k={k}: Inertia={kmeans.inertia_:.2f}, Silhouette Score={sil_score:.4f}")
 
 # fig, axes = plt.subplots(1, 2, figsize=(14, 5))
@@ -152,7 +152,7 @@ df['GMM_Cluster'] = cluster_labels_gmm
 # print(pd.Series(cluster_labels_gmm).value_counts().sort_index())
 
 sil_gmm = silhouette_score(X_scaled, cluster_labels_gmm)
-# print(f"\nSilhouette Score برای GMM (k=5): {sil_gmm:.4f}")
+print(f"\nSilhouette Score برای GMM (k=5): {sil_gmm:.4f}")
 # print(f"K-Means:      {silhouette_values[3]:.4f}")
 # print(f"Hierarchical: {sil_hier:.4f}")
 # print(f"GMM:          {sil_gmm:.4f}")

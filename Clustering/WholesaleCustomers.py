@@ -98,6 +98,8 @@ from sklearn.cluster import KMeans
 
 kmeans_2 = KMeans(n_clusters=2, random_state=42, n_init=10)
 labels_2 = kmeans_2.fit_predict(X_scaled)
+score = silhouette_score(X_scaled, labels_2)
+print(f"silhouette score = {score:.4f}")
 
 kmeans_3 = KMeans(n_clusters=3, random_state=42, n_init=10)
 labels_3 = kmeans_3.fit_predict(X_scaled)

@@ -3,6 +3,8 @@ from tkinter import ttk, messagebox
 import joblib
 import pandas as pd
 import numpy as np
+import os
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 MONTH_MAP = {
     "January": 1, "February": 2, "March": 3, "April": 4,
@@ -112,7 +114,7 @@ class PredictionPage(tk.Frame):
             holiday = YES_NO_MAP[self.holiday_var.get()]
             workingday = YES_NO_MAP[self.workingday_var.get()]
         except (ValueError, KeyError):
-            messagebox.showerror("Input Error", "Input Error", "Please complete all fields.")
+            messagebox.showerror("Input Error", "Please complete all fields.")
             return
 
 
@@ -137,7 +139,7 @@ class PredictionPage(tk.Frame):
             'weather_4': 1 if weather == 4 else 0,
         }
 
-        saved = joblib.load("../../Regression/ModelsOutcome/bike_rental_model.pkl")
+        saved = joblib.load(os.path.join(BASE_DIR, "Regression", "ModelsOutcome", "bike_rental_model.pkl"))
         model = saved['model']
         feature_names = saved['feature_names']
 

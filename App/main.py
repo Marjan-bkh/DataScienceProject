@@ -29,6 +29,8 @@ from prediction_pages.student_knowledge import PredictionPageStudentKnowledge
 from prediction_pages.wholesale_customers import PredictionPageWholesaleCustomers
 from prediction_pages.power_consumption import PredictionPagePowerConsumption
 from prediction_pages.travel_review import PredictionPageTravelReview
+from prediction_pages.fertility_prediction import PredictionPageFertility
+from prediction_pages.istanbul_stock_exchange import PredictionIstanbulStockPage
 
 
 class App(tk.Tk):
@@ -37,7 +39,7 @@ class App(tk.Tk):
         self.title("ML Model Explorer")
         self.geometry("700x650")
         window_width = 700
-        window_height = 650
+        window_height = 750
 
         x = int(self.winfo_screenwidth() / 2 - window_width / 2)
         y = int(self.winfo_screenheight() / 2 - window_height / 2)
@@ -82,6 +84,8 @@ class App(tk.Tk):
         self.frames["prediction_wholesale_customers"] = PredictionPageWholesaleCustomers(container, self)
         self.frames["prediction_power_consumption"] = PredictionPagePowerConsumption(container, self)
         self.frames["prediction_travel_review"] = PredictionPageTravelReview(container, self)
+        self.frames["prediction_fertility_diagnosis"] = PredictionPageFertility(container, self)
+        self.frames["prediction_istanbul_stock"] = PredictionIstanbulStockPage(container, self)
 
 
 

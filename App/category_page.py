@@ -49,6 +49,10 @@ class CategoryPage(tk.Frame):
                       command=lambda: self.controller.show_frame("prediction_covid_risk")).pack(pady=5)
             tk.Button(self.list_frame, text="Online News Popularity (Viral?)", width=30,
                       command=lambda: self.controller.show_frame("prediction_online_news_classification")).pack(pady=5)
+            tk.Button(self.list_frame, text="Fertility Diagnosis", width=30,
+                      command=lambda: self.controller.show_frame("prediction_fertility_diagnosis")).pack(pady=5)
+
+
 
         elif category == "regression":
             tk.Button(self.list_frame, text="Bike Rental Demand", width=30,
@@ -69,6 +73,8 @@ class CategoryPage(tk.Frame):
                       command=lambda: self.controller.show_frame("prediction_real_estate")).pack(pady=5)
             tk.Button(self.list_frame, text="Online News Popularity", width=30,
                       command=lambda: self.controller.show_frame("prediction_online_news")).pack(pady=5)
+            tk.Button(self.list_frame, text="Istanbul Stock Exchange", width=30,
+                      command=lambda: self.controller.show_frame("prediction_istanbul_stock")).pack(pady=5)
 
 
         elif category == "clustering":
