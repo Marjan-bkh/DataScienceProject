@@ -51,6 +51,9 @@ class CategoryPage(tk.Frame):
                       command=lambda: self.controller.show_frame("prediction_online_news_classification")).pack(pady=5)
             tk.Button(self.list_frame, text="Fertility Diagnosis", width=30,
                       command=lambda: self.controller.show_frame("prediction_fertility_diagnosis")).pack(pady=5)
+            tk.Button(self.list_frame, text="Amazon Review", width=30,
+                      command=lambda: self.controller.show_frame("prediction_amazon_review")).pack(pady=5)
+
 
 
 

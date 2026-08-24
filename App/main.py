@@ -31,6 +31,7 @@ from prediction_pages.power_consumption import PredictionPagePowerConsumption
 from prediction_pages.travel_review import PredictionPageTravelReview
 from prediction_pages.fertility_prediction import PredictionPageFertility
 from prediction_pages.istanbul_stock_exchange import PredictionIstanbulStockPage
+from prediction_pages.amazon_review import PredictionAmazonReviewPage
 
 
 class App(tk.Tk):
@@ -86,6 +87,7 @@ class App(tk.Tk):
         self.frames["prediction_travel_review"] = PredictionPageTravelReview(container, self)
         self.frames["prediction_fertility_diagnosis"] = PredictionPageFertility(container, self)
         self.frames["prediction_istanbul_stock"] = PredictionIstanbulStockPage(container, self)
+        self.frames["prediction_amazon_review"] = PredictionAmazonReviewPage(container, self)
 
 
 
