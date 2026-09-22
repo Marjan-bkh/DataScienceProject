@@ -1,4 +1,6 @@
 import tkinter as tk
+from App.scrollable_frame import ScrollableFrame
+
 
 class CategoryPage(tk.Frame):
     def __init__(self, parent, controller):
@@ -10,8 +12,9 @@ class CategoryPage(tk.Frame):
 
         tk.Button(self, text="← Back", command=lambda: controller.show_frame("home")).pack(anchor="w", padx=15)
 
-        self.list_frame = tk.Frame(self)
-        self.list_frame.pack(pady=20)
+        scroll_container = ScrollableFrame(self)
+        scroll_container.pack(fill="both", expand=True)
+        self.list_frame = scroll_container.scrollable_frame
 
     def on_show(self, category):
         self.category = category
@@ -51,6 +54,8 @@ class CategoryPage(tk.Frame):
                       command=lambda: self.controller.show_frame("prediction_online_news_classification")).pack(pady=5)
             tk.Button(self.list_frame, text="Fertility Diagnosis", width=30,
                       command=lambda: self.controller.show_frame("prediction_fertility_diagnosis")).pack(pady=5)
+            tk.Button(self.list_frame, text="WiFi Localization", width=30,
+                      command=lambda: self.controller.show_frame("prediction_wifi_localization")).pack(pady=5)
             tk.Button(self.list_frame, text="Amazon Review", width=30,
                       command=lambda: self.controller.show_frame("prediction_amazon_review")).pack(pady=5)
 

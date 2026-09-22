@@ -3,7 +3,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-# خوندن فایل - چون با تب جدا شده و هدر نداره، باید این دو مورد رو مشخص کنیم
 column_names = ['wifi_1', 'wifi_2', 'wifi_3', 'wifi_4', 'wifi_5', 'wifi_6', 'wifi_7', 'room']
 
 df = pd.read_csv('Datasets/wifi_localization.txt', sep='\t', header=None, names=column_names)
@@ -13,8 +12,7 @@ df = pd.read_csv('Datasets/wifi_localization.txt', sep='\t', header=None, names=
 
 # # بررسی آماری فقط روی ستون‌های وای‌فای (نه room، چون طبقه‌ایه)
 # print(df.iloc[:, :-1].describe())
-#
-# # توزیع تعداد نمونه در هر اتاق
+
 # print(df['room'].value_counts().sort_index())
 
 # fig, axes = plt.subplots(3, 3, figsize=(15, 12))
@@ -90,7 +88,6 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import accuracy_score, classification_report
 
-# چون Logistic Regression و KNN به مقیاس حساسن، داده رو استاندارد می‌کنیم
 scaler = StandardScaler()
 X_train_scaled = scaler.fit_transform(X_train_fe)
 X_test_scaled = scaler.transform(X_test_fe)
@@ -131,17 +128,21 @@ cv = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
 
 import joblib
 
-# آموزش نهایی روی کل داده‌ی train (با فیچرهای مهندسی‌شده)
 final_model = LogisticRegression(max_iter=1000, random_state=42)
 final_model.fit(X_train_scaled, y_train)
 
-# ارزیابی نهایی روی test (که تا الان دست‌نخورده بود)
 final_preds = final_model.predict(X_test_scaled)
 final_acc = accuracy_score(y_test, final_preds)
 print(f"دقت نهایی روی Test Set: {final_acc:.4f}")
 
-# ذخیره‌ی مدل و scaler با هم (چون هر دو برای پیش‌بینی جدید لازمن)
-joblib.dump(final_model, 'ModelsOutcome/wifi_room_model.pkl')
+# joblib.dump(final_model, 'ModelsOutcome/wifi_room_model.pkl')
+# joblib.dump(scaler, 'ModelsOutcome/wifi_room_scaler.pkl')
+
+model_bundle = {
+    'model': final_model,
+    'feature_names': list(X_train_fe.columns)
+}
+joblib.dump(model_bundle, 'ModelsOutcome/wifi_room_model.pkl')
 joblib.dump(scaler, 'ModelsOutcome/wifi_room_scaler.pkl')
 
-print("مدل و scaler ذخیره شدن.")
+print("model saved")
